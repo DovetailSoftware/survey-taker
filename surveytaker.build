@@ -56,7 +56,11 @@
 		    <fileset basedir="${src.dir}\docs" prefix="docs">
 		        <include name="${doc.name}" />
 		    </fileset>
-		    		    		    		    		    
+
+		    <fileset basedir="${src.dir}\examples" prefix="examples">
+		        <include name="**/**/**"/>	        
+		    </fileset>
+		    		    		    		    		    		    
 		</zip>
 	</target>
 
