@@ -1,0 +1,64 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+' Product        :  Answer Tab for Question/Answer Form                            
+'
+' Name           :  1914
+'                                                                           
+' Description    :  Displays answers for previously answered questions.
+'
+'                   External Routines
+'
+'                     none
+'
+'                   Messages
+'
+'                     none
+'
+'                   CB Callback Routines
+'
+'                     1. Form_Load() - Called by CB when form loads
+'                     2. CLB_ANS_Click() - A specific question is selected
+'
+'                   Internal Routines. These routines are utilities for use within
+'                   this module.
+'
+'                     none
+'
+' Author          : First Choice Software, Inc.
+'                   14412 Spicewood Springs Road
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'
+' Platforms       : This version supports Clarify 4.5 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Functional Declarations
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Form Load Method        
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Me.DoDefault
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Select an Answer Custom list Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLB_ANS_Click()
+  Dim ans_rec As Record
+
+                                        ' Get the answer from the list
+                                        ' Display the question and answer
+  Set ans_rec = CLB_ANS.Selected
+  LBL_Q_DAT.Caption = ans_rec.GetField("question")
+  LBL_A_DAT.Caption = ans_rec.GetField("answer")
+End Sub

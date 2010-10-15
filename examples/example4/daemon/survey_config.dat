@@ -1,0 +1,117 @@
+/***************************************************************************/
+/* Product        :  Survey Taker  (tm)                                    */
+/*                                                                         */
+/* Series         :  First Choice Workflow Series(tm)                      */
+/*                                                                         */
+/* Name           :  survey_config.dat                                     */
+/*                                                                         */
+/* Description    :  This file contains configuration items for the ST     */
+/*                                                                         */
+/*   Author:        First Choice Software, Inc.                            */
+/*                  8900 Business Park Drive                               */
+/*                  Austin, TX  78759                                      */
+/*                  (512) 418-2905                                         */
+/*                  EMAIL: support@fchoice.com                             */
+/*                  www.fchoice.com                                        */
+/*                                                                         */
+/*   Platforms:     This version supports Clarify 6.0 and later            */
+/*                                                                         */
+/* Copyright (C)  2001 First Choice Software, Inc.                         */
+/* All Rights Reserved.                                                    */
+/***************************************************************************/
+
+
+/***************************************************************************/
+/* The config item 'SURVEY new mail folder' tells what folder to look in   */
+/* for new messages.  Used only for Exchange mail.                         */
+/***************************************************************************/
+OBJECT  TYPE="config_itm", NAME="SURVEY new mail folder"
+  UNIQUE_FIELD = name
+  FIELDS
+   name ="SURVEY new mail folder";
+   str_value ="Personal Folders|SURVEY|INBOX";
+  END_FIELDS
+END_OBJECT  NAME="SURVEY new mail folder"
+
+
+/***************************************************************************/
+/* The config item 'SURVEY location on fail' tells where to put mail messages */
+/* if the operation fails.  If it's left blank the message will be deleted. */
+/* Sample value for Exchange: "Personal Folders|ST_CLARIFY_MAIL|ERROR"*/
+/*    str_value ="gary@fchoice.com"; */
+/* Sample value for Forwarding Email: jsmith@fchoice.com                   */
+/***************************************************************************/
+OBJECT  TYPE="config_itm", NAME="SURVEY location on fail"
+  UNIQUE_FIELD = name
+  FIELDS
+   name ="SURVEY location on fail";
+   str_value ="Personal Folders|SURVEY|ERRFAIL"; 
+  END_FIELDS
+END_OBJECT  NAME="SURVEY location on fail"
+
+/***************************************************************************/
+/* The config item 'SURVEY location on success' tells where to put mail    */
+/* messages if the operation succeeds.  If left blank the message will be  */
+/* deleted.                                                                */
+/* Sample value for EXCHANGE: "Personal Folders|SURVEY_CLARIFY_MAIL|DONE"   */
+/* Sample value for Forwarding Email: jsmith@fchoice.com                   */
+/***************************************************************************/
+OBJECT  TYPE="config_itm", NAME="SURVEY location on success"
+  UNIQUE_FIELD = name
+  FIELDS
+   name ="SURVEY location on success";
+   str_value ="";
+   str_value ="Personal Folders|SURVEY|SUCCESS"; 
+  END_FIELDS
+END_OBJECT  NAME="SURVEY location on success"
+
+
+/***************************************************************************/
+/* The config item 'SURVEY validate answers' tells the daemon whether or   */
+/* or not to validate the answer against the valid choices.                */
+/* Valid Values for this config item are True or False                     */
+/***************************************************************************/
+OBJECT  TYPE="config_itm", NAME="SURVEY validate answers"
+  UNIQUE_FIELD = name
+  FIELDS
+   name ="SURVEY validate answers";
+   str_value ="True";
+  END_FIELDS
+END_OBJECT  NAME="SURVEY validate answers"
+
+/***************************************************************************/
+/* The config item 'SURVEY use defaults' tells the daemon whether or       */
+/* or not to use the default value for an answer when the customer has     */
+/* left it blank.                                                          */
+/* If set to True, the default answer will be used                         */
+/* If set to False, the answer will be blank                               */
+/* Valid Values for this config item are True or False                     */
+/***************************************************************************/
+OBJECT  TYPE="config_itm", NAME="SURVEY use defaults"
+  UNIQUE_FIELD = name
+  FIELDS
+   name ="SURVEY use defaults";
+   str_value ="True";
+  END_FIELDS
+END_OBJECT  NAME="SURVEY use defaults"
+
+/***************************************************************************/
+/* The config item 'SURVEY strip comment mark' tells the daemon whether    */
+/* or not to strip out marked comments that some mail clients can add      */
+/* For example, a line may look like                                       */
+/*   ANSWER: [Joe Customer] This is my answer                              */
+/* By stripping out the comment mark, the line would now look like:        */
+/*   ANSWER: This is my answer                                             */ 
+/* If set to True, the comment mark will be stripped                       */
+/* If set to False, the comment mark will be left alone                    */
+/* Valid Values for this config item are True or False                     */
+/***************************************************************************/
+OBJECT  TYPE="config_itm", NAME="SURVEY strip comment marks"
+  UNIQUE_FIELD = name
+  FIELDS
+   name ="SURVEY strip comment marks";
+   str_value ="True";
+  END_FIELDS
+END_OBJECT  NAME="SURVEY strip comment marks"
+
+

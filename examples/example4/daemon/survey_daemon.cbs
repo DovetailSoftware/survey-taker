@@ -1,0 +1,956 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Product        :  Survey Taker(tm)
+'
+' Series         :  First Choice Productivity Series(tm)
+'
+' Name           :  survey_daemon.cbs
+'
+' Description    :  A CB daemon for processing email survey replies
+'
+' Author          : First Choice Software, Inc.
+'                   8900 Business Park Drive
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'                   EMAIL: support@fchoice.com
+'                   www.fchoice.com
+'
+' Platforms       : This version supports Clarify 4.0 and later
+'                   This daemon only supports Windows 2000 & Windows NT
+'                   This daemon only supports Microsoft Outlook mail client
+'
+' Copyright (C)  1997, 1998, 1999, 2000, 2001 First Choice Software, Inc.
+' All Rights Reserved.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' User Defineable Constants 
+' You may modify these constants to your liking
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                                       ' Should we print debug statements or not?
+                                       ' Must be True or False.
+                                       ' This applies to error messages regarding individual
+                                       ' email messages. Severe errors are always printed.
+  Const PrintDebugs      = True
+                                       ' Subject of email if parsing fails
+  Const cFailureSubject  = "SURVEY TAKER DAEMON FAILURE"
+                                       ' Subject of email if parsing succeeds
+  Const cSuccessSubject  = "SURVEY TAKER DAEMON SUCCESS"
+                                       ' Error Message - Can't find survey config items
+  Const cConfigError     = "ERROR! Could not find survey config items. Please re-check your installation"
+                                       ' Error Message - Unable to properly parse message
+  Const cParseError      = "ERROR! Unable to properly parse message. "
+                                       ' Error Message - Unable to properly connect to Outlook
+  Const cOutlookError    = "ERROR! Unable to properly connect to Outlook."
+                                       ' Error Message - Unable to properly connect to MAPI Namespace
+  Const cMAPIError       = "ERROR! Unable to properly connect to MAPI Namespace."
+                                       ' Error Message - Unable to properly connect to Outlook Folders
+  Const cFoldersError    = "ERROR! Unable to properly connect to Outlook Folders."
+                                       ' Error Message - Unable to properly retrieve Outlook Items
+  Const cItemError       = "ERROR! Unable to properly retrieve Outlook Items."
+                                       ' Error Message - when getting new mail folder
+  Const cNewFolderError  = "Please re-check your 'SURVEY New mail Folder' Configuration Item."
+                                       ' Error Message - when getting failure folder
+  Const cFailFolderError = "Please re-check your 'SURVEY location on Fail' Configuration Item."
+                                       ' Error Message - when getting success folder
+  Const cSuccessFolderError  = "Please re-check your 'SURVEY location on Success' Configuration Item."
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Defined Constants
+' Do not change any of these!
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Const cDoNotModifyLine = "*** DO NOT MODIFY ANYTHING BELOW THIS LINE ***"
+  Const cSeperatorLine   = "****************************************************************"
+  Const cBlankLine       = ""
+  Const cNumQuestions    = "NumQuestions"
+  Const cObjectType      = "ObjectType"
+  Const cObjectID        = "ObjectID"
+  Const cQuestionID      = "QuestionID"
+  Const cQuestion        = "Question"
+  Const cSeperator       = "|"
+  Const cTagSeperator    = ":"
+  Const	cOutlookMailItem =	0
+  Const cTab             = Chr$(9)	
+  Const cChoices         = "CHOICES"
+  Const cAnswer          = "ANSWER"
+  Const cDefaultString   = "Default"
+  Const cOpenCommentMark = "["
+  Const cCloseCommentMark= "]"
+
+'Forward Declarations
+  Declare Sub get_items(items As Object)
+  Declare Sub get_mail_exch()
+  Declare Sub handle_message(res As Integer, the_msg As Object)
+
+' Global Variables
+  Global folder_levels   As Integer
+  Global folders()       As String        ' folder structure for new messages (exchange).
+  Global sfolders()      As String        ' folder structure for messages that succeed (exchange).
+  Global ffolders()      As String        ' folder structure for messages that fail (exchange).
+  Global CRLF            As String        
+  Global fail_loc        As String        ' where to put mail messages that fail (exchange).
+  Global succ_loc        As String        ' where to put mail messages that succeed (exchange).
+  Global daemon_num      As Long          ' daemon number that is calling this code.
+  Global gErrorMessage   As String        
+  Global gEmailReplyOperatorList As List
+  Global gValidateAnswers As Boolean      ' Config Item - Should we validate answers against valid choices
+  Global gUseDefaults     As Boolean      ' Config Item - Should we use the default values if the answer is blank
+  Global gStripComments   As Boolean      ' Config Item - Should we strip out comment marks
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function Description: Replacement for Item$
+'
+' We have this because when the daemon gets large, the cbbatch
+'  compiler has problems with the Item$ syntax. If under 100,000
+'  bytes, it has no problem. So, we have a replacement
+'
+' Copyright (C) 1998. First Choice Software. All Rights Reserved.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Function get_item(t_str As String, which As Integer, delim As String) As String
+  Dim t_int As Integer                  ' Looping integer
+  Dim t_pos As Integer                  ' Parsing position
+  Dim e_pos As Integer                  ' End position
+  
+                                        ' Start at character 1
+                                        ' Go through proper number
+                                        '  of delims to the start
+                                        ' Start string one char after
+  t_pos = 0
+  For t_int = 0 To which - 2
+    t_pos = t_pos + 1
+    While Mid$(t_str, t_pos, 1) <> delim
+      t_pos = t_pos + 1
+    Wend
+  Next t_int
+  t_pos = t_pos + 1
+
+                                        ' Parse for end position
+  e_pos = t_pos
+  While e_pos <= Len(t_str) And Mid$(t_str, e_pos, 1) <> delim
+    e_pos = e_pos + 1
+  Wend
+  
+                                        ' Return the item
+  get_item = Mid$(t_str, t_pos, e_pos - t_pos)  
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''
+''' 	Remove Character From String
+'''''''''''''''''''''''''''''''''''''''''''''''
+Function RemoveCharacterFromString(sInputStr as String, sChar as String) as String
+  Dim index     as integer
+  Dim TheLength as integer
+
+  TheLength = Len(sInputStr)
+  If TheLength = 0 Then 
+    RemoveCharacterFromString = sInputStr
+    Exit Function
+  End If
+
+  'Check up til the last character:
+  For index = 1 to TheLength - 1
+    If (Mid$(sInputStr,index,1)) = sChar Then
+      sInputStr = Left$(sInputStr,index - 1) + Mid$(sInputStr,index + 1,TheLength)
+    End If
+  Next index
+
+  'Check the last character:
+  If Right$(sInputStr,1)  = sChar Then
+    sInputStr = Left$(sInputStr,index-1)
+  End If
+
+  RemoveCharacterFromString = sInputStr
+End Function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function Description:  Open the Exchange mailbox and initialize objects
+'
+' Copyright (C) 1998. First Choice Software. All Rights Reserved.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub get_mail_exch()
+  Dim outlook    As Object
+  Dim name_space As Object
+  Dim item       As Object
+  Dim folder     As Object
+  Dim folder_1   As Object
+  Dim folder_2   As Object
+  Dim folders2() As Object
+  Dim i          As Integer
+
+' Create the mail object.
+  On Error GoTo outlook_error
+  Set outlook = CreateObject("outlook.application")
+  On Error GoTo 0
+
+  On Error GoTo mapi_error
+  Set name_space = outlook.GetNameSpace("MAPI")
+  On Error GoTo 0
+
+  On Error GoTo folders_error
+' If we don't include the next line, we connect up to the "Default" outlook
+' profile.
+'  name_space.Logon "Clarify Super EmailClerk User", "Password", False, False
+
+  Redim folders2(Ubound(folders))
+
+' This section sets up the folder hierarchy to traverse down and get the
+' mail message.
+' Each element in folders() is the next folder to traverse to on the way to 
+' where the messages are.  e.g. if the user wants to look for new messages in 
+' "Mailbox - Nancy Delagi|SURVEY_CLARIFY_MAIL|NEW_MAIL" then 
+' folder(1) = Mailbox - Nancy Delagi; folder(2) = SURVEY_CLARIFY_MAIL;
+' folder(3) = NEW_MAIL.
+
+' So folder has the top level folder.
+  Set folder = name_space.Folders(folders(1))
+ If ubound(folders) = 1 Then
+' Use the top level folder as the mailbox.
+    Set item = folder.items
+  Else
+' Now go through the other folders and make the next one current.
+    For i = 2 To Ubound(folders)
+      If i = 2 then
+        Set folders2(i) = folder.Folders(folders(i))
+      Else
+        Set folders2(i) = folders2(i-1).Folders(folders(i))
+      End If
+    Next i
+
+  On Error GoTo 0
+
+' Now set item to the group of messages in the right folder.
+    On Error GoTo item_error
+    Set item = folders2(Ubound(folders2)).items
+    On Error GoTo 0
+  End If
+
+' Call get_items with all the mail messages in the folder.
+  get_items item
+  Exit Sub
+
+outlook_error:
+  Debug.Print cOutlookError + CRLF + cNewFolderError 
+  Exit Sub
+mapi_error:
+  Debug.Print cMAPIError + CRLF + cNewFolderError 
+  Exit Sub
+folders_error:
+  Debug.Print cFoldersError + CRLF + cNewFolderError 
+  Exit Sub
+item_error:
+  Debug.Print cItemError + CRLF + cNewFolderError 
+  Exit Sub
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function Description:  Read the mail messages, parse it , & handle it
+'
+' Copyright (C) 1998. First Choice Software. All Rights Reserved.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub get_items(items As Object)
+
+  Dim the_msg     As Object
+  Dim subtag_list As New List
+  Dim the_sub     As String
+  Dim the_mess    As String
+  Dim i           As Integer
+  Dim res         As Integer
+  Dim j           As Integer
+  Dim t_int       As Integer
+  Dim question_list As New List
+  Dim question_id_list As New List
+  Dim answer_list   As New List
+  Dim NumQuestions  As Integer
+  Dim ObjectType    As String
+  Dim ObjectID      As Long
+  Dim QuestionIDs   As String
+  Dim the_body      As String
+  Dim FoundQuestion As Boolean
+  Dim lct           as Long
+  Dim LineNumber    as Long
+  Dim the_line      as String
+  Dim x             as Integer
+  Dim the_param     as String
+  Dim the_value     as String
+  Dim t_pos         as Integer
+  Dim t_param       as String
+  Dim counter       as Integer
+  Dim ObjectRelation As String
+  Dim br            as New BulkRetrieve
+  Dim bs            as New BulkSave
+  Dim TheList       as List
+  Dim recQuestion   as Record
+  Dim recAnswer     as Record
+  Dim LineLength    as Integer
+  Dim oper_counter  as Integer      
+  Dim t_oper        as String
+  Dim TheAnswer     As String
+  Dim default_answer_num As Integer
+  Dim NumAnswers    as Integer
+  Dim counter2      as Integer
+  Dim AnswerIsValid as Boolean
+  Dim StrPosition   as Integer
+  Dim temp_value    as String
+  Dim strDefaultPlusParens  as String
+  Dim lenDefaultPlusParens as Integer
+
+                                       ' Set up the List of subtags
+                                       ' This is how we can tell if we've found a subtag
+                                       ' we're looking for or if our answer has ended
+  subtag_list.ItemType = "string"
+  subtag_list.AppendItem cChoices
+  subtag_list.AppendItem cAnswer 
+  subtag_list.AppendItem cDoNotModifyLine
+  subtag_list.AppendItem cSeperatorLine
+
+                                        ' If no items, we're done
+  If Items.Count = 0 Then Exit Sub
+                                        ' For each item in the list...                                        
+  For i = items.Count To 1 Step -1
+                                        ' Get the message, the subject, & the body
+    Set the_msg = items.Item(i)
+    the_sub = the_msg.Subject
+    the_body = the_msg.Body
+                                        ' If the message is marked as read don't pick 
+                                        '  it up.
+    If the_msg.UnRead = False Then
+      Goto Nexti
+    End If
+                                        ' Mark the message as read so nobody 
+                                        '  else will pick it up.
+    the_msg.UnRead = False
+                                        ' Reinit the variables for each message
+    question_list.Clear
+    question_id_list.Clear
+    answer_list.Clear
+    NumQuestions = 0
+    ObjectType   = ""
+    ObjectID     = 0
+    QuestionIDs  = ""
+    Set bs = Nothing
+    Set bs = New BulkSave
+    res = 0    
+    gErrorMessage = ""
+
+
+    lct = LineCount(the_body)          ' Find out how many lines are in the_body.
+    For LineNumber = 1 To lct          ' Loop through the lines
+      the_line = Line$(the_body, LineNumber, LineNumber)
+      LineLength =  Len(the_line)
+
+                                       ' Remove any reply operators
+                                       ' These are the prefixes that go before a line during a reply
+       For oper_counter = 0 to gEmailReplyOperatorList.Count - 1 
+         t_oper = gEmailReplyOperatorList.ItemByIndex(oper_counter)
+         If Left$(the_line,Len(t_oper)) = t_oper Then the_line = Mid$(the_line,Len(t_oper) + 1,LineLength)
+       Next oper_counter
+                                       ' Cleanup the line
+       the_line = Trim$(the_line)
+                                       ' See if we have a seperator. If so, this may be a param/value pair
+      x = Instr(the_line, cTagSeperator)
+      If x <> 0 Then
+
+                                       ' Get the paramater & its value
+                                       ' Clean them up (remove tabs & trim)
+        the_param = Left(the_line, x-1)
+        the_param = RemoveCharacterFromString(the_param, cTab)
+        the_param = UCase$(Trim$(the_param))
+        the_value = Trim(Right(the_line, len(the_line)-x))
+        the_value = RemoveCharacterFromString(the_value, cTab)
+        the_value = Trim$(the_value)        
+
+
+                                       ' If this is a question, add it to the list
+        If Left(the_param,9) = "QUESTION " Then
+          question_list.AppendItem the_value
+        End If
+                                       ' If this is the Number of Questions parameter, save it
+        If the_param = UCase(cNumQuestions) Then
+          NumQuestions = CInt(the_value)
+        End If
+                                       ' If this is the Object Type parameter, save it
+        If the_param = UCase(cObjectType) Then
+          ObjectType = the_value
+        End If
+                                       ' If this is the Object ID parameter, save it
+        If the_param = UCase(cObjectID) Then
+          ObjectID = CLng(the_value)
+        End If
+                                       ' If this is the List of question objids parameter, save it
+        If the_param = UCase(cQuestionID) Then
+                   ' Now we have to see if there's more data on the next row that we
+                   '  want. If this is string data (don't go to the next line for other
+                   '  data types), then we start on the next row, and keep going until the
+                   '  end of the message. For each row, get the data, and see if there is
+                   '  a subtag. If there is, we're done, and we don't process this row.
+                   '  If no subtag, add it to the data and go to the next row
+          LineNumber = LineNumber + 1
+          While LineNumber <= lct
+            the_line = Line$(the_body, LineNumber, LineNumber)
+            LineLength =  Len(the_line)
+
+                                       ' Remove any reply operators
+                                       ' These are the prefixes that go before a line during a reply
+           For oper_counter = 0 to gEmailReplyOperatorList.Count - 1 
+             t_oper = gEmailReplyOperatorList.ItemByIndex(oper_counter)
+             If Left$(the_line,Len(t_oper)) = t_oper Then the_line = Mid$(the_line,Len(t_oper) + 1,LineLength)
+           Next oper_counter
+
+                                       ' If this is a subtag or a blank line, we're done processing the list
+                                       ' of question objids
+            the_line = Trim$(the_line)
+     	      If subtag_list.FindFirstIndex(the_line) > 0 OR Len(Trim$(the_line)) = 0 Then
+       	  	    GoTo no_more_question_ids
+       	      End If
+                                       ' If the seperator line matches the first 40 characters, it's probably
+                                       ' the seperator line. Sometimes a reply email will split the seperator line
+     	      If Left(Trim$(the_line),40) = Left(Trim$(cSeperatorLine),40) Then
+       	  	    GoTo no_more_question_ids
+       	      End If
+
+            t_pos = InStr(the_line, cTagSeperator)
+            If t_pos > 0 Then
+       	      t_param = Left$(the_line, t_pos - 1)
+              t_param = UCase$(t_param)
+       	      If subtag_list.FindFirstIndex(t_param) > 0 OR Len(Trim$(the_line)) = 0 Then
+       	  	    GoTo no_more_question_ids
+       	      End If
+            End If
+            the_value = the_value & the_line
+            LineNumber = LineNumber + 1
+          Wend
+no_more_question_ids:
+                                       'Remove all ending CRLFs for Strings
+          While Right(the_value,2) = CRLF 
+            the_value = Mid$(the_value,1,Len(the_value) - 2)
+          WEnd
+
+          QuestionIDs = the_value
+        End If
+
+
+                                       ' If this is an answer, add it to the answer list
+        If Left(the_param,6) = "ANSWER" Then
+
+                   'If the config_itm is set, remove the comment marks
+                   'See if we have a starting comment mark operator
+                   'See if we have an ending comment mark operator
+                   'Remove the data between the comment operators, including the operators
+                   'If we have data left, then this is our new value data
+                   'Otherwise, the data gets left as is, as we don't want to accidentely
+                   'remove valid data
+          If gStripComments Then
+            If Left(the_value,1) = cOpenCommentMark Then
+              StrPosition = InStr(2,the_value,cCloseCommentMark)
+              If StrPosition > 0 Then
+                temp_value = Trim(Mid(the_value,StrPosition+1))
+                If Len(temp_value) > 0 Then 
+                  the_value = temp_value
+                End If
+              End If
+            End If
+          End If
+
+                   'If the default string is at the end of the answer,
+                   ' then remove it. This is because users may cut & paste the whole answer
+                   ' including the "(Default)" part.
+                   'So, if the line looks like:
+                   '    ANSWER: True (Default)
+                   'Then we'll make it look like:
+                   '    ANSWER: True
+                   ' 
+            strDefaultPlusParens = "(" + cDefaultString + ")"
+            lenDefaultPlusParens = Len(strDefaultPlusParens)
+            If Right(the_value,lenDefaultPlusParens) = strDefaultPlusParens Then
+                the_value = Trim(Left(the_value,Len(the_value)-lenDefaultPlusParens))
+            End If
+
+                   ' Now we have to see if there's more data on the next row that we
+                   '  want. If this is string data (don't go to the next line for other
+                   '  data types), then we start on the next row, and keep going until the
+                   '  end of the message. For each row, get the data, and see if there is
+                   '  a subtag. If there is, we're done, and we don't process this row.
+                   '  If no subtag, add it to the data and go to the next row
+          LineNumber = LineNumber + 1
+          While LineNumber <= lct
+            the_line = Line$(the_body, LineNumber, LineNumber)
+            LineLength =  Len(the_line)
+
+                                       ' Remove any reply operators
+                                       ' These are the prefixes that go before a line during a reply
+          For oper_counter = 0 to gEmailReplyOperatorList.Count - 1 
+            t_oper = gEmailReplyOperatorList.ItemByIndex(oper_counter)
+            If Left$(the_line,Len(t_oper)) = t_oper Then the_line = Mid$(the_line,Len(t_oper) + 1,LineLength)
+          Next oper_counter
+
+            the_line = Trim$(the_line)
+     	      If subtag_list.FindFirstIndex(the_line) > 0 OR Len(Trim$(the_line)) = 0 Then
+       	  	    GoTo no_more_text
+       	      End If
+            t_pos = InStr(the_line, cTagSeperator)
+            If t_pos > 0 Then
+       	      t_param = Left$(the_line, t_pos - 1)
+              t_param = UCase$(t_param)
+       	      If subtag_list.FindFirstIndex(t_param) > 0 OR Len(Trim$(the_line)) = 0 Then
+       	  	    GoTo no_more_text
+       	      End If
+            End If
+            the_value = the_value & Space$(1) + the_line
+            LineNumber = LineNumber + 1
+          Wend
+no_more_text:
+                                       'Remove all ending CRLFs for Strings
+          While Right(the_value,2) = CRLF 
+            the_value = Mid$(the_value,1,Len(the_value) - 2)
+          WEnd
+          answer_list.AppendItem the_value
+        End If
+     End If
+
+                                       ' process the next line of the message
+  Next LineNumber
+                                       ' We're done processing all lines of the message
+                                       
+                                       ' Split the Question Objids into a list & sort
+  For counter = 1 to ItemCount(QuestionIDs, cSeperator)
+    If IsNumeric(Item$(QuestionIDs, counter,counter,cSeperator)) Then
+      question_id_list.AppendItem cLng(Item$(QuestionIDs, counter,counter,cSeperator))
+    End If
+  Next counter
+  question_id_list.Sort
+
+                                       ' Now that we've parsed the message
+                                       ' Do some error checking
+                                       ' Make sure our data looks OK
+  If question_list.Count <> answer_list.Count Then 
+     gErrorMessage = cParseError + _
+                     "Number of Questions does not match number of answers" 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+  If question_list.Count <> question_id_list.Count Then 
+     gErrorMessage = cParseError + _
+                     "Number of Questions does not match number of expected questions" 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+  If NumQuestions <> question_id_list.Count Then
+     gErrorMessage = cParseError + _
+                     "Number of Questions does not match number of expected questions" 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+  If question_list.Count = 0 Then 
+     gErrorMessage = cParseError + _
+                     "Found zero questions in message." 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+  If answer_list.Count = 0 Then 
+     gErrorMessage = cParseError + _
+                     "Found zero answers in message." 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+  If ObjectID = 0 Then 
+     gErrorMessage = cParseError + _
+                     "Could not find ObjectID in message." 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+  If Len(ObjectType) = 0 Then 
+     gErrorMessage = cParseError + _
+                     "Could not find ObjectType in message." 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If
+
+                                       ' Set up the relation based on the object type
+  Select Case Lcase(trim(ObjectType))
+  Case "case"
+    ObjectRelation = "surv_ans2case"
+  Case "contact"
+    ObjectRelation = "surv_ans2contact"
+  Case "bus_org"
+    ObjectRelation = "surv_ans2bus_org"
+  Case "site"
+    ObjectRelation = "surv_ans2site"
+  Case "interact"
+    ObjectRelation = "surv_ans2interact"
+  Case "commit_log"
+    ObjectRelation = "surv_ans2commit_log"
+  Case Else
+     gErrorMessage = "ERROR! Invalid or Unsupported Object Type: " + ObjectType 
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+   End Select
+
+                                       ' Make sure our data actually is OK     
+  br.SimpleQuery 0, ObjectType
+  br.AppendFilter 0, "objid", cbEqual, ObjectID
+  br.SimpleQuery 1, "surv_quest"
+  br.AppendFilter 1, "objid", cbIn, question_id_list
+  br.AppendSort 1, "objid", cbAscending
+  br.RetrieveRecords
+                                       ' Make sure we found the object (case/contact/etc.)
+  Set TheList = br.GetRecordList(0)
+  If TheList.Count = 0 Then
+     gErrorMessage = "ERROR! Cannot find " + ObjectType + " with objid = " + CStr(ObjectID)
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email
+  End If  
+                                       ' Make sure we found all of the survey questions
+  Set TheList = br.GetRecordList(1)
+  If TheList.Count <> question_id_list.Count Then
+     gErrorMessage =  "ERROR! Could not find all survey questions in database" + CRLF + _
+                      "Attempted to find " + CStr(question_id_list.Count) + " questions. Found " + CStr(TheList.Count) + "questions."
+     If PrintDebugs Then Debug.Print gErrorMessage
+     res = -1
+     Goto handle_email     
+  End If  
+
+
+                                       'If the config_item is set to true, then
+                                       'For multiple choice answers, validate that 
+                                       'the given answer is one of the choices
+                                       'For blank answers, if we're using defaults, 
+                                       'Then a blank answer is OK.
+
+  If gValidateAnswers Then            
+   For counter = 0 to question_list.Count - 1
+    AnswerIsValid = False
+    Set recQuestion = TheList.ItemByIndex(counter) 
+    If recQuestion.GetField("answer_type") <> 0 Then 
+      NumAnswers = recQuestion.GetField("num_answers")
+      TheAnswer = Trim$(answer_list.ItemByIndex(counter))
+
+      If TheAnswer <> "" Then
+        For counter2 = 1 to NumAnswers
+          If UCase(recQuestion.GetField("ans" + CStr(counter2))) = UCase(TheAnswer) Then        
+            AnswerIsValid = True
+            Exit For
+          End If
+        Next counter2
+      End If
+
+      If TheAnswer = "" and gUseDefaults Then
+        AnswerIsValid = True
+      End If 
+                                       'If we found a bad answer, error out 
+      If Not AnswerIsValid Then
+        gErrorMessage =  "ERROR! Invalid Answer of:'" + TheAnswer + "'" + CRLF + _
+                         "For question: " + recQuestion.GetField("question")
+        If PrintDebugs Then Debug.Print gErrorMessage
+        res = -1
+        Goto handle_email     
+      End If
+
+    End If
+   Next counter
+  End If
+
+                                       ' If we're still here, everything looks good, so save the answers
+  For counter = 0 to question_list.Count - 1
+    Set recAnswer = New Record
+    Set recQuestion = TheList.ItemByIndex(counter) 
+    TheAnswer = ""
+                                       'If the config item is set AND 
+                                       'If the answer is blank, then use the default
+                                       'For text answers, this is stored in the ans1 field
+                                       'For all other types, the number of the default 
+                                       ' choice is in the default_ans field
+                                       'If the answer is not blank OR if the config item is unset, 
+                                       ' then use the answer as is
+    If gUseDefaults AND Trim$(answer_list.ItemByIndex(counter)) = "" Then
+      Select Case recQuestion.GetField("answer_type")
+        Case 0
+          TheAnswer = recQuestion.GetField("ans1")
+        Case Else
+          default_answer_num = recQuestion.GetField("default_ans")
+          TheAnswer = recQuestion.GetField("ans" + CStr(Trim(default_answer_num)))
+      End Select
+    Else
+      TheAnswer = answer_list.ItemByIndex(counter)
+    End If
+                                       'Create the survey answer record & relate it    
+    recAnswer.RecordType = "surv_ans"
+    recAnswer.SetField "question", question_list.ItemByIndex(counter)
+    recAnswer.SetField "answer", TheAnswer
+    recAnswer.SetField "date_answered", App.CurrentDate
+    recAnswer.SetField "surv_taker", App.UserName
+    bs.InsertRecord recAnswer
+    bs.RelateRecordsToID recAnswer, ObjectType, ObjectID, ObjectRelation
+    bs.RelateRecordsToID recAnswer, "surv_quest", question_id_list.ItemByIndex(counter), "surv_ans2surv_quest"
+  Next counter
+                                       ' Save everything to the database
+    bs.Save
+
+                                       ' Handle the original email
+handle_email:
+    handle_message res, the_msg
+                                       'Go onto the next item (message)
+Nexti:
+  Next i
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function Description:  Handle the original email message
+'
+' Copyright (C) 1998. First Choice Software. All Rights Reserved.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub handle_message(res As Integer, the_msg As Object)
+
+  Dim outlook    As Object
+  Dim name_space As Object
+  Dim item       As Object
+  Dim folder     As Object
+  Dim folders2() As Object
+  Dim i          As Integer
+  Dim for_item   As Object
+  Dim FolderError As String
+
+' Set up the Proper Error Message, in case of a failure
+  If res = 0 Then
+    FolderError = cSuccessFolderError
+  Else
+    FolderError = cFailFolderError
+  End If
+
+' Create the mail object.
+  On Error GoTo outlook_error
+  Set outlook = CreateObject("outlook.application")
+  On Error GoTo 0
+
+  On Error GoTo mapi_error
+  Set name_space = outlook.GetNameSpace("MAPI")
+  On Error GoTo 0
+
+  On Error GoTo folders_error
+' The config item 'SURVEY location on fail' tells what to do with the original 
+' email on operation failure; 'SURVEY location on success' tells what to do with
+' the original email on operation success.  If the config item is blank then
+' delete the message.
+      If res = 0 Then
+        Redim folders2(Ubound(sfolders))
+        If Ubound(sfolders) = 0 Then
+          the_msg.Delete
+        Else
+          If ubound(sfolders) = 1 Then
+             If Instr(sfolders(1), "@") > 0 Then
+                Set for_item = the_msg.Forward
+                for_item.Recipients.Add ffolders(1)
+                for_item.Subject = for_item.Subject & Space(1) & "-" & Space(1) & cSuccessSubject
+                for_item.Send
+                Goto delete_exchange
+             End If
+            the_msg.move name_space.Folders(sfolders(1))
+          Else
+            Set folder = name_space.Folders(sfolders(1))
+            For i = 2 To Ubound(sfolders)
+              If i = 2 then
+                Set folders2(i) = folder.Folders(sfolders(i))
+              Else
+                Set folders2(i) = folders2(i-1).Folders(sfolders(i))
+              End If
+            Next i
+            the_msg.move folders2(Ubound(folders2))
+          End If
+        End If
+      Else
+        Redim folders2(Ubound(ffolders))
+        If Ubound(ffolders) = 0 Then
+delete_exchange:
+          the_msg.Delete
+        Else
+          If ubound(ffolders) = 1 Then
+             If Instr(ffolders(1), "@") > 0 Then
+                Set for_item = the_msg.Forward
+                for_item.Recipients.Add ffolders(1)
+                for_item.Subject = for_item.Subject & Space(1) & "-" & Space(1) & cFailureSubject
+                for_item.Body = cFailureSubject & CRLF & gErrorMessage & _
+                                CRLF & cSeperatorLine & CRLF & CRLF & for_item.Body 
+                for_item.Send
+                Goto delete_exchange
+             End If
+                                       ' Add the error message into the failed message
+            the_msg.Body = cFailureSubject & CRLF & gErrorMessage & _
+                           CRLF & cSeperatorLine & CRLF & CRLF & the_msg.Body 
+            the_msg.move name_space.Folders(ffolders(1))
+          Else
+            Set folder = name_space.Folders(ffolders(1))
+            For i = 2 To Ubound(ffolders)
+              If i = 2 then
+                Set folders2(i) = folder.Folders(ffolders(i))
+              Else
+                Set folders2(i) = folders2(i-1).Folders(ffolders(i))
+              End If
+            Next i
+                                       ' Add the error message into the failed message
+           the_msg.Body = cFailureSubject & CRLF & gErrorMessage & _
+                          CRLF & cSeperatorLine & CRLF & CRLF & the_msg.Body 
+            the_msg.move folders2(Ubound(folders2))
+          End If
+        End If
+      End If
+      On Error GoTo 0
+      Exit Sub
+
+outlook_error:
+  Debug.Print cOutlookError + CRLF + FolderError 
+  Exit Sub
+mapi_error:
+  Debug.Print cMAPIError + CRLF + FolderError 
+  Exit Sub
+folders_error:
+  Debug.Print cFoldersError + CRLF + FolderError 
+  Exit Sub
+item_error:
+  Debug.Print cItemError + CRLF + FolderError 
+  Exit Sub
+End Sub
+
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Function Description:  Run the survey_daemon
+'
+' Copyright (C) 1998. First Choice Software. All Rights Reserved.
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub survey_daemon(sleep_time As Long, num_cycles As Long, daemon_numb As Long, _
+               in_folder As String)
+  Dim t_ret    As New BulkRetrieve      ' Structure to query the DB
+  Dim fig_list As List                  ' List of config items
+  Dim fig_rec  As Record                ' Each configuration item
+  Dim fpath    As String                ' File path
+  Dim new_d    As String                ' Path to the new daemon
+  Dim res      As Integer               ' Result from shell command
+  Dim i        As Integer               ' Looping integers
+  Dim j        As Integer
+  Dim k        As Integer
+                                        ' Define CRLF for this platform
+  CRLF = Basic.Eoln$
+                                        ' Define the list of email reply operators/prefixes
+  Set gEmailReplyOperatorList = New List
+  gEmailReplyOperatorList.ItemType = "string"
+  gEmailReplyOperatorList.AppendItem ">>"
+  gEmailReplyOperatorList.AppendItem ">"
+
+
+                                        ' Remember the daemon number
+  daemon_num = daemon_numb
+                                        ' Get the survey taker config items
+                                        '  from the config_itm table.
+  t_ret.SimpleQuery 0, "config_itm"
+  t_ret.AppendFilter 0, "name", cbLike, "SURVEY%"
+  t_ret.RetrieveRecords
+
+  Set fig_list = t_ret.GetRecordList(0)
+  If fig_list.Count = 0 Then
+    Debug.Print ""
+    Debug.Print cConfigError
+    Debug.Print ""
+    Exit Sub
+  End If
+
+  For i = 0 To fig_list.Count-1
+    Set fig_rec = fig_list.ItemByIndex(i)
+    Select Case fig_rec.GetField("name")
+                                        ' The config item 'SURVEY new mail folder' tells 
+                                        '  what folder to look in for new messages.  
+                                        '  Sample value: "Mailbox - Nancy Delagi|SURVEY_CLARIFY_MAIL|LEVEL2"
+                                        ' If they override the config item, use the 
+                                        '  argument (mainly for multiple daemons)
+      Case "SURVEY new mail folder"
+        fpath = fig_rec.GetField("str_value")
+        If in_folder <> "" Then fpath = in_folder
+        k = ItemCount(fpath, "|")
+        Redim folders(k)
+        For j = 1 To k
+          folders(j) = get_item(fpath, j, "|")
+        Next j
+      Case "SURVEY location on success"
+                                        ' The config item 'SURVEY location on success' 
+                                        '  tells where to put mail messages
+                                        ' if the operation succeeded.  If left blank 
+                                        '  the message will be deleted.
+                                        ' Sample value for EXCHANGE: 
+                                        '  "Mailbox - Nancy Delagi|SURVEY_CLARIFY_MAIL|DONE"
+         fpath = fig_rec.GetField("str_value")
+         k = ItemCount(fpath, "|")
+         Redim sfolders(k)
+         For j = 1 To k
+           sfolders(j) = get_item(fpath, j, "|")
+         Next j
+      Case "SURVEY location on fail"
+                                        ' The config item 'SURVEY location on fail' 
+                                        '  tells where to put mail messages
+                                        '  if the operation failed.  If left blank 
+                                        '  the message will be deleted.
+                                        '  If it's an email address, forward the message to this person
+                                        '  and delete
+                                        '  Sample value for EXCHANGE: 
+                                        '  "Mailbox - Nancy Delagi|SURVEY_CLARIFY_MAIL|ERRORS"
+                                        '  Sample value for Forwarding Email: jsmith@fchoice.com
+
+          fpath = fig_rec.GetField("str_value")
+          k = ItemCount(fpath, "|")
+          Redim ffolders(k)
+          For j = 1 To k
+            ffolders(j) = get_item(fpath, j, "|")
+          Next j
+                                        ' The config item 'SURVEY validate answers'  
+                                        '  tells if we should validate answers against the
+                                        '  the valid choices
+      Case "SURVEY validate answers"
+        gValidateAnswers = fig_rec.GetField("str_value")
+                                        ' The config item 'SURVEY use defaults'  
+                                        '  tells if we should use default values when the customer
+                                        '  has left the answer blank
+      Case "SURVEY use defaults"
+        gUseDefaults = fig_rec.GetField("str_value")      
+      Case "SURVEY strip comment marks"
+        gStripComments = fig_rec.GetField("str_value")      
+      Case Else
+    End Select
+  Next i  
+                                        ' Do the work...
+                                        ' Because of a memory leak in Clarify, 
+                                        '  after a number of iterations the daemon
+                                        '  should be shut down and a new copy started.  
+                                        '  num_cycles is the number of times
+                                        '  to check incoming mail before exiting the 
+                                        '  daemon and starting again.
+                                        '  sleep_time is how long to sleep after 
+                                        '  checking the incoming mail box.
+  For i = 1 To num_cycles
+    get_mail_exch
+    sleep(sleep_time)
+  Next i
+
+                                        ' Start a new copy of the daemon before 
+                                        '  exiting this one.
+  new_d = "SURVEY_daemon" + Trim$(Str$(daemon_num)) + ".bat"
+  res = Shell(new_d, ebNormalFocus)
+End Sub
+

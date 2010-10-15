@@ -1,0 +1,64 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Product        :  Survey Taker(tm)
+'
+' Series         :  First Choice Productivity Series(tm)
+'
+' Name           :  Example 3 code - Contact form (712)
+'
+' Description    :  Illustrates how to display the Q&A form from a Button
+'                   Click method. Displays survey for the contact.
+'
+' Author          : First Choice Software, Inc.
+'                   4412 Spicewood Springs Road
+'                   Suite 701
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'                   EMAIL: support@fchoice.com
+'                   www.fchoice.com
+'
+' Platforms       : This version supports Clarify 4.0 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Form Load Method
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Me.DoDefault
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Survey Button Click Method
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_SURVEY_Click()
+  Dim contact_rec As Record             ' View record. Holds case info
+  Dim qa_form     As New Form           ' Q/A form
+                    
+
+                                        ' Get case info view record
+                                        ' Make sure there is a valid contact
+                                        '  before allowing the survey. If not,
+                                        '  put out an error and leave.
+  Set contact_rec = Cobj_CONTACT.Contents
+  If contact_rec.GetField("objid") = 0 Then
+     App.MsgBox "You must save the contact before you can perform a survey."
+     Exit Sub
+  End If
+
+                                        '  Show Q/A form
+                                        '  Send Q/A form a message. Tell it
+                                        '   to display a contact survey, the 
+                                        '   contact's objid, and that it should
+                                        '   display survey questions only for the
+                                        '   "Personal" question set.
+  qa_form.Show 1912, cbFrontIfUp
+  qa_form.Notify cbFirstMessage + 1, "C" + _
+                     Trim$(Str$(contact_rec.GetField("objid"))) + _
+                     "Personal"
+End Sub

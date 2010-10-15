@@ -1,0 +1,559 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+' Product        :  Edit/New  Survey Question Form                            
+'
+' Name           :  1911
+'                                                                           
+' Description    :  Allows a user to create and modify questions.
+'
+'                   External Routines
+'
+'                     none
+'
+'                   Messages
+'
+'                     Inbound: cbFirstMessage + 1 - Edit a survey question
+'
+'                     Outbound:  cbFirstMessage + 2 - Push the list button
+'
+'                   CB Callback Routines
+'
+'                     1. Form_Load() - Called by CB when form loads
+'                     2. OPT_xxx_Click() - Answer type button was clicked
+'                     3. OPT_DEFx_Click() - Select a default answer
+'                     4. TXT_ANSx_Click() - Pressed a key in a text box      
+'                     5. CHK_ACIVE_Click() - Toggle question as active    
+'                     6. CHK_ONCE_Click() - Toggle "ask once" check box
+'                     7. BTN_DT1_Click() - Change the start date        
+'                     8. BTN_DT2_Click() - Change the end date                  
+'                     9. BTN_REPLACE_Click() - Replace current question
+'                    10. BTN_ADD_Click() - Add current question
+'                    11. CLOSE_Click() - Done button
+'                    12. Message() - Message handler
+'
+'                   Internal Routines. These routines are utilities for use within
+'                   this module.
+'
+'                     1. mark_dirty() - Is the form dirty, or not?
+'                     2. show_answer() - Display proper number of answers
+'                     3. make_changes() - Add/replace the question
+'
+' Author          : First Choice Software, Inc.
+'                   14412 Spicewood Springs Road
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'
+' Platforms       : This version supports Clarify 4.5 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Functional Declarations
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+Declare Sub show_answers(how_many As Integer)
+Declare Sub mark_dirty(is_dirty As Boolean)
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Form Load Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Dim new_rec As New Record
+
+                                        ' Fill survey question record with
+                                        '  empty question
+  new_rec.RecordType = "surv_quest"
+  Cobj_SURV_QUEST.Fill new_rec
+
+                                        ' Do default action
+                                        ' Set initial button enabled state
+                                        ' Clear out answer text
+                                        ' Assume the question is active
+  Me.DoDefault
+  OPT_TEXT.Value = True
+  Cobj_LAST_RAD_BUTTON.Fill 0
+  BTN_REPLACE.Enabled = False
+  BTN_ADD.Enabled = True
+  TXT_ANS1.Text = ""
+  TXT_ANS2.Text = ""
+  TXT_ANS3.Text = ""
+  TXT_ANS4.Text = ""
+  TXT_ANS5.Text = ""
+  CHK_ACTIVE.Value = True
+
+                                        ' Show no answers to start.
+                                        ' Form is not yet dirty
+                                        ' Set the initial focus
+  show_answers 0
+  mark_dirty False
+  TXT_QUEST.SetFocus
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Mark Form as Dirty, or Not
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub mark_dirty(is_dirty As Boolean)
+                                        ' Remember if form is dirty or not
+  If is_dirty Then
+     Cobj_IS_DIRTY.Fill 1
+  Else
+     Cobj_IS_DIRTY.Fill 0
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Show Proper Number of Answers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub show_answers(how_many As Integer)
+  Dim t_bool As Boolean
+
+                                        ' Make the proper labels and text
+                                        '  items visible and invisible
+  If how_many = 0 Then
+     LBL_ANS1.Visible = False 
+     LBL_DEF_TXT_ANS.Visible = True
+  Else
+     TXT_ANS2.Visible = True
+     LBL_ANS1.Visible = True
+     LBL_DEF_TXT_ANS.Visible = False
+  End If
+
+  OPT_DEF1.Value = True
+  t_bool = how_many >= 2
+  LBL_ANS2.Visible = t_bool
+  TXT_ANS2.Visible = t_bool
+  OPT_DEF1.Visible = t_bool
+  OPT_DEF2.Visible = t_bool
+  t_bool = how_many >= 3
+  LBL_ANS3.Visible = t_bool
+  TXT_ANS3.Visible = t_bool
+  OPT_DEF3.Visible = t_bool
+  t_bool = how_many >= 4
+  LBL_ANS4.Visible = t_bool
+  TXT_ANS4.Visible = t_bool
+  OPT_DEF4.Visible = t_bool
+  t_bool = how_many >= 5
+  LBL_ANS5.Visible = t_bool
+  TXT_ANS5.Visible = t_bool
+  OPT_DEF5.Visible = t_bool
+  mark_dirty True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Select An Answer Type Radio Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub clear_ans_text(new_button As Long)
+  If new_button < 3 Or Cobj_LAST_RAD_BUTTON.Contents < 3 Then
+     TXT_ANS1.Text = ""
+     TXT_ANS2.Text = ""
+     TXT_ANS3.Text = ""
+     TXT_ANS4.Text = ""
+     TXT_ANS5.Text = ""
+  End If
+  Cobj_LAST_RAD_BUTTON.Fill new_button
+End Sub
+
+Sub OPT_TEXT_Click()
+  clear_ans_text 0
+  show_answers 0
+  TXT_ANS1.Enabled = True
+  TXT_ANS1.Text = ""
+  TXT_ANS1.SetFocus  
+End Sub
+
+Sub OPT_YN_Click()
+  clear_ans_text 1
+  show_answers 2
+  TXT_ANS1.Enabled = False
+  TXT_ANS2.Enabled = False
+  TXT_ANS1.Text = "Yes"
+  TXT_ANS2.Text = "No"
+End Sub
+
+Sub OPT_TF_Click()
+  clear_ans_text 2
+  show_answers 2
+  TXT_ANS1.Enabled = False
+  TXT_ANS2.Enabled = False
+  TXT_ANS1.Text = "True"
+  TXT_ANS2.Text = "False"
+End Sub
+
+Sub OPT_2_Click()
+  clear_ans_text 3
+  show_answers 2
+  TXT_ANS1.Enabled = True
+  TXT_ANS2.Enabled = True
+  TXT_ANS1.SetFocus
+End Sub
+
+Sub OPT_3_Click()
+  clear_ans_text 4
+  show_answers 3
+  TXT_ANS1.Enabled = True
+  TXT_ANS2.Enabled = True
+  TXT_ANS1.SetFocus
+End Sub
+
+Sub OPT_4_Click()
+  clear_ans_text 5
+  show_answers 4
+  TXT_ANS1.Enabled = True
+  TXT_ANS2.Enabled = True
+  TXT_ANS1.SetFocus
+End Sub
+
+Sub OPT_5_Click()
+  clear_ans_text 6
+  show_answers 5
+  TXT_ANS1.Enabled = True
+  TXT_ANS2.Enabled = True
+  TXT_ANS1.SetFocus
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Default Radio Buttons Click Methods
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub OPT_DEF1_Click()
+  mark_dirty True
+End Sub
+
+Sub OPT_DEF2_Click()
+  mark_dirty True
+End Sub
+
+Sub OPT_DEF3_Click()
+  mark_dirty True
+End Sub
+
+Sub OPT_DEF4_Click()
+  mark_dirty True
+End Sub
+
+Sub OPT_DEF5_Click()
+  mark_dirty True
+End Sub
+
+Sub DDL_SET_Click()
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+Sub TXT_QUEST_KeyPress(a As Integer)
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Text Box KeyPress Methods       
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub TXT_ANS1_KeyPress(a As Integer)
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+Sub TXT_ANS2_KeyPress(a As Integer)
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+Sub TXT_ANS3_KeyPress(a As Integer)
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+Sub TXT_ANS4_KeyPress(a As Integer)
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+Sub TXT_ANS5_KeyPress(a As Integer)
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Check Box Click Methods      
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CHK_ACTIVE_Click()
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+Sub CHK_ONCE_Click()
+  Me.DoDefault
+  mark_dirty True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Date Button Click Methods    
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_DT1_Click()
+  Dim t_comm As New CommonDialog
+
+                                        ' Use previous start date
+                                        ' Pop date/time dialog
+                                        ' If date selected, use it
+                                        ' Mark form as dirty
+  t_comm.DateTime = CStr(TXT_START_DT.Text)
+  t_comm.Action = cbCDDateTime
+  If Instr(t_comm.DateTime, "?") = 0 Then
+     TXT_START_DT.Text = CDate(t_comm.DateTime)
+  End If
+  mark_dirty True
+End Sub
+
+Sub BTN_DT2_Click()
+  Dim t_comm As New CommonDialog
+
+                                        ' Use previous end date
+                                        ' Pop date/time dialog
+                                        ' If date selected, use it
+                                        ' Mark form as dirty
+  t_comm.DateTime = CStr(TXT_END_DT.Text)
+  t_comm.Action = cbCDDateTime
+  If Instr(t_comm.DateTime, "?") = 0 Then
+     TXT_END_DT.Text = CDate(t_comm.DateTime)
+  End If
+  mark_dirty True
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Add/Replace Method       
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub make_changes(is_add As Boolean)
+  Dim t_save As New BulkSave
+  Dim t_rec  As Record
+  Dim t_num  As Integer
+  Dim t_type As Integer
+  Dim t_def  As Integer
+
+                                        ' If not dirty, leave
+  If Cobj_IS_DIRTY.Contents = 0 Then Exit Sub
+
+                                        ' Get the question
+                                        ' Get type and number of answers
+  Set t_rec = Cobj_SURV_QUEST.Contents
+  t_type = 3
+  If OPT_TEXT.Value Then 
+     t_num = 1
+     t_type = 0
+  Else
+     If OPT_5.Value Then 
+        t_num = 5
+     Else
+        TXT_ANS5.Text = ""
+        If OPT_4.Value Then 
+           t_num = 4
+        Else
+           TXT_ANS4.Text = ""
+           If OPT_3.Value Then 
+              t_num = 3
+           Else
+              TXT_ANS3.Text = ""
+              If OPT_2.Value Then 
+                 t_num = 2
+              Else
+                 If OPT_YN.Value Then
+                    t_num = 2
+                    t_type = 1
+                    t_rec.SetField "ans1", "Yes"
+                    t_rec.SetField "ans2", "No"
+                 Else
+                    If OPT_TF.Value Then
+                       t_num = 2
+                       t_type = 2
+                       t_rec.SetField "ans1", "True"
+                       t_rec.SetField "ans2", "False"
+                    End If
+                 End If
+              End If
+           End If
+        End If
+     End If
+  End If
+
+                                        ' Get the default value
+  t_def = -1
+  If t_num > 1 Then
+     If OPT_DEF1.Value Then
+        t_def = 1
+     Else
+        If OPT_DEF2.Value Then
+           t_def = 2
+        Else
+           If OPT_DEF3.Value Then
+              t_def = 3
+           Else
+              IF OPT_DEF4.Value Then
+                 t_def = 4
+              Else
+                 t_def = 5
+              End If
+           End If
+        End If
+     End If
+  End If
+
+                                        ' Set fields for question
+  t_rec.SetField "answer_type", t_type
+  t_rec.SetField "num_answers", t_num
+  t_rec.SetField "default_ans", t_def
+
+                                        ' Insert/update as needed
+                                        ' Enable/disable proper buttons
+                                        ' Commit changes
+                                        ' Mark for as clean
+                                        ' Notify the "Select Question" form -
+                                        '  tell it to push "List" to see the
+                                        '  new question
+  If is_add Then
+     t_save.InsertRecord t_rec
+     BTN_REPLACE.Enabled = True
+  Else
+     t_save.UpdateRecord t_rec
+  End If
+  t_save.Save
+  mark_dirty False
+  Me.NotifyByID 1910, cbFirstMessage + 2, ""
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Replace Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_REPLACE_Click()
+  make_changes False
+End Sub
+ 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Add Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_ADD_Click()
+  mark_dirty True
+  make_changes True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Done Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLOSE_Click()
+  Dim t_ans As Integer
+
+                                        ' If dirty form, ask if they really
+                                        '  want to save changes first. If
+                                        '  so, add it.
+                                        ' Close the form.
+  If Cobj_IS_DIRTY.Contents = 1 Then     
+     t_ans = app.MsgBox("The question has changed. Do you want to save changes before exiting?", _
+                    cbYesNo, "Confirm")
+     If t_ans = ebYes Then
+         make_changes NOT BTN_REPLACE.Enabled
+     End If
+  End If
+  Me.Close
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Message Handler            
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Message(ByVal num As Long, ByVal info As String)
+  Dim t_ret  As New BulkRetrieve
+  Dim t_list As List
+  Dim t_rec  As Record
+  Dim t_type As Integer
+  Dim t_num  As Integer
+  Dim t_def  As Integer
+
+                                        ' Do the default action
+                                        ' If message is:
+                                        '  1. cbCloseMessage - Close this form
+                                        '  2. cbFirstMessage + 1 - Find the
+                                        '      specified question (from list
+                                        '      form).
+  Me.DoDefault
+  Select Case num
+   Case cbCloseMessage
+    Me.Close
+   Case cbFirstMessage + 1
+                                        ' Get the survey question
+                                        ' Fill the question into cont object
+     t_ret.SimpleQuery 0, "surv_quest"
+     t_ret.AppendFilter 0, "objid", cbEqual, CLng(info)
+     t_ret.RetrieveRecords
+     Set t_list = t_ret.GetRecordList(0)
+     Set t_rec = t_list.ItemByIndex(0)
+     Cobj_SURV_QUEST.Fill t_rec
+
+                                        ' Get data fields from question
+                                        ' Show the proper fields, and fill
+                                        '  in text as needed
+     t_type = t_rec.GetField("answer_type")
+     t_num = t_rec.GetField("num_answers")
+     If t_type < 1 Then
+        show_answers 0       
+     End If
+     Select Case t_type 
+      Case 0
+        OPT_TEXT.Value = True
+      Case 1
+        OPT_YN_Click
+        OPT_YN.Value = True
+      Case 2
+        OPT_TF_Click
+        OPT_TF.Value = True
+      Case 3
+        show_answers t_num
+        Cobj_LAST_RAD_BUTTON.Fill t_num + 1
+        Select Case t_num
+         Case 2
+          OPT_2.Value = True
+         Case 3
+          OPT_3.Value = True
+         Case 4
+          OPT_4.Value = True
+         Case 5
+          OPT_5.Value = True
+        End Select
+     End Select
+
+                                        ' Get default answer, and highlight
+                                        '  the proper radio button, and set
+                                        '  default radio button
+     t_def = t_rec.GetField("default_ans")
+     Select Case t_def
+      Case 1
+        OPT_DEF1.Value = True
+      Case 2
+        OPT_DEF2.Value = True
+      Case 3
+        OPT_DEF3.Value = True
+      Case 4
+        OPT_DEF4.Value = True
+      Case 5
+        OPT_DEF5.Value = True
+     End Select
+
+                                        ' Highlight the proper buttons
+                                        ' Form is not dirty yet
+     BTN_REPLACE.Enabled = True
+     mark_dirty False
+  End Select
+End Sub
