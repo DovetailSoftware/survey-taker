@@ -1,0 +1,64 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Product        :  Survey Taker(tm)
+'
+' Series         :  First Choice Productivity Series(tm)
+'
+' Name           :  Example 1 code - New case form (411)
+'
+' Description    :  Illustrates how to display the Q&A form from a Find 
+'                   Caller operation. Displays survey for the site.
+'
+' Author          : First Choice Software, Inc.
+'                   4412 Spicewood Springs Road
+'                   Suite 701
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'                   EMAIL: support@fchoice.com
+'                   www.fchoice.com
+'
+' Platforms       : This version supports Clarify 4.0 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Form Load Method
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Me.DoDefault
+End Sub
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Message Handler 
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Message(ByVal num As Long, ByVal info As String)
+  Dim cont_view_rec As Record           ' View record. Holds contact/site
+  Dim qa_form       As New Form         ' Q/A form
+
+                                        ' Do default action
+                                        ' If this is a close message...
+                                        '  Close the form.
+                                        ' If a Find Caller message...
+                                        '  Get site/contact information
+                                        '  Show Q/A form
+                                        '  Send Q/A form a message. Tell it
+                                        '   to display a site survey, the 
+                                        '   site's objid, and that it should
+                                        '   display only "Corporate" questions.
+  Me.DoDefault
+  Select Case num
+    Case cbCloseMessage
+      Me.Close
+    Case 551
+      Set cont_view_rec = Cobj_CONTACT_VIEW.Contents
+      qa_form.Show 1912, cbFrontIfUp
+      qa_form.Notify cbFirstMessage + 1, "S" + _
+                     Trim$(Str$(cont_view_rec.GetField("loc_objid"))) + _
+                     "Corporate"
+  End Select
+End Sub

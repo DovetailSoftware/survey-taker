@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+
+<project name="SurveyTaker" default="build-release" basedir="." xmlns="http://nant.sf.net/release/0.85/nant.xsd">
+
+  <property name="nant.settings.currentframework" value="net-3.5" />
+	<property name="nunit2.Formatter" value="Plain" overwrite="false"/>
+
+	<target name="build-release">
+		<call target="build-zip-file"/>
+	</target>
+
+	<target name="deploy-release">
+		<call target="build-release"/>
+		<call target="deploy-to-qa"/>
+	</target>
+
+	<target name="ship-release">
+		<call target="build-release"/>
+		<call target="deploy-to-ship"/>
+		<call target="tag-release"/>
+	</target>
+
+
+  <target name="global-properties">
+    <property name="product.version" value="2.0.2"/>
+    <property name="product.name" value="SurveyTaker"/>
+    <property name="product.dir" value="survey_taker"/>
+    <property name="doc.name" value="SurveyTaker.pdf"/>
+    <property name="local.path" value="." />
+    <property name="zipfile.name" value="${product.name}.${product.version}.zip"/>
+		<property name="src.dir" value="." />		
+		<property name="svn.home" value="c:\program files\subversion\bin\" />
+		<property name="svn.home" value="c:\program files (x86)\subversion\bin\" if="${directory::exists('c:\program files (x86)\subversion')}"/>
+		<property name="svn.home" value="c:\program files (x86)\VisualSVN\bin\" if="${directory::exists('c:\program files (x86)\VisualSVN')}"/>
+  </target>
+
+
+	<target name="build-zip-file" depends="global-properties">
+		<delete file="${zipfile.name}" />
+
+		<zip zipfile="${zipfile.name}">
+		    
+		    <fileset basedir="${src.dir}\cb" prefix="cb">
+		        <include name="*.cbs" />
+		        <include name="*.dir" />
+		    </fileset>		  
+
+		    <fileset basedir="${src.dir}\forms" prefix="forms">
+		        <include name="*.dat" />
+		    </fileset>
+
+		    <fileset basedir="${src.dir}\schema" prefix="schema">
+		        <include name="*.sch" />
+		    </fileset>
+
+		    <fileset basedir="${src.dir}\docs" prefix="docs">
+		        <include name="${doc.name}" />
+		    </fileset>
+
+		    <fileset basedir="${src.dir}\examples" prefix="examples">
+		        <include name="**/**/**"/>	        
+		    </fileset>
+		    		    		    		    		    		    
+		</zip>
+	</target>
+
+	<target name="deploy-to-qa" depends="global-properties">
+		<property name="deployment.base.dir" value="\\marvin\build\${product.dir}" />
+		<property name="deployment.dir" value="${deployment.base.dir}\${product.version}" />
+
+		<mkdir dir="${deployment.base.dir}" unless="${directory::exists(deployment.base.dir)}" />
+		<mkdir dir="${deployment.dir}" unless="${directory::exists(deployment.dir)}" />
+
+		<copy todir="${deployment.dir}" overwrite="true">			
+			<fileset basedir="${src.dir}\docs" >
+		        <include name="${doc.name}" />
+		    </fileset>
+		</copy>
+
+		<copy todir="${deployment.dir}" overwrite="true">
+			<fileset basedir="${local.path}">
+				<include name="${zipfile.name}" />
+			</fileset>
+		</copy>
+		
+	</target>
+
+
+	<target name="deploy-to-ship" depends="global-properties">
+		<property name="deployment.base.dir" value="\\marvin\product\${product.dir}" />
+		<property name="deployment.dir" value="${deployment.base.dir}\${product.version}" />
+
+		<mkdir dir="${deployment.base.dir}" unless="${directory::exists(deployment.base.dir)}" />
+		<mkdir dir="${deployment.dir}" unless="${directory::exists(deployment.dir)}" />
+
+		<copy todir="${deployment.dir}" overwrite="true">			
+			<fileset basedir="${src.dir}\docs" >
+		        <include name="${doc.name}" />
+		    </fileset>
+		</copy>
+		
+		<copy todir="${deployment.dir}" overwrite="true">
+			<fileset basedir="${local.path}">
+				<include name="${zipfile.name}" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="get-release-version" depends="global-properties">
+		<getsvnrevision propertyName="svnRevision" svnExePath="${svn.home}/svn.exe"/>
+		<property name="asm.version" value="${product.version}.${svnRevision}" overwrite="true" />
+		<echo message="Version set to ${asm.version}"/>
+	</target>
+
+
+	<target name="tag-release" depends="get-release-version">
+		<property name="svn.tag.path" value="https://code.dovetailsoftware.com/svn/classic/SurveyTaker/tags/release_${asm.version}" />
+		<property name="svn.tag.message" value="Tagging SurveyTaker version ${asm.version} to ${svn.tag.path}" />
+
+		<echo message="${svn.tag.message}"/>
+
+		<exec program="${svn.home}svn.exe"	commandline="copy https://code.dovetailsoftware.com/svn/classic/SurveyTaker/ ${svn.tag.path} -m &quot;${svn.tag.message}&quot;" />
+	</target>
+
+
+</project>

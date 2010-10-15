@@ -1,0 +1,435 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Product        :  Survey Taker(tm)
+'
+' Series         :  First Choice Productivity Series(tm)
+'
+' Name           :  survbr.cbs
+'
+' Description    :  Generates a survey file for a given entity with all survey
+'                   questions and answers. File can then be faxed, emailed, etc.
+'                   as desired. Survey can also be immediately emailed. 
+'
+' Author          : First Choice Software, Inc.
+'                   8900 Business Park Drive
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'                   EMAIL: support@fchoice.com
+'                   www.fchoice.com
+'
+' Platforms       : This version supports Clarify 4.0 and later
+'
+' Copyright (C)  1997, 1998, 1999, 2000, 2001 First Choice Software, Inc.
+' All Rights Reserved.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' User Defineable Constants 
+' You may modify these constants to your liking
+' You may also modify the gInstructions text defined in the FillGlobalData 
+' subroutine
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                                       'Define who should receive the email survey replies
+  Const cReplyToPerson   = "survey_replies@yourcompany.com"
+                                       'Define what the survey title should look like
+  Const cSurveyTitle     = "Survey questionnaire for "
+                                       'Define what the 2nd half of the survey title should look like
+  Const cSurveyTitle2     = " from OurCompany"
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Defined Constants
+' Do not change any of these!
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Const cSeperatorLine   = "****************************************************************"
+  Const cBlankLine       = ""
+  Const cDoNotModifyLine = "*** DO NOT MODIFY ANYTHING BELOW THIS LINE ***"
+  Const cNumQuestions    = "NumQuestions"
+  Const cObjectType      = "ObjectType"
+  Const cObjectID        = "ObjectID"
+  Const cQuestionID      = "QuestionID"
+  Const cQuestion        = "Question"
+  Const cSeperator       = "|"
+  Const cTagSeperator    = ":"
+  Const	cOutlookMailItem =	0
+  Const cTab             = Chr$(9)	
+  Const cChoices         = "CHOICES"
+  Const cAnswer          = "ANSWER"
+  Const cDefaultString   = "Default"
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Global Variables
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+  Global gInstructions as String
+  Global gContactEmail as String  
+  Global CRLF          as String
+  Global gUseDefaults  As Boolean      ' Config Item - Should we use the default values if the answer is blank
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Fill Global Data Subroutine
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub FillGlobalData() 
+                                       ' Define the Carriage Return/Line Feed
+  CRLF = Basic.Eoln$
+                                       ' Define the Instructions Text
+                                       ' This can't be a constant because of the EOLN
+                                       ' You may modify this as you wish
+  gInstructions = _
+        "This is an email-based survey. Your reply will be automatically" + CRLF + _
+        "parsed, so it is important that you:" + CRLF + _
+        "- Simply hit 'Reply' to this message, and type in your answers" + CRLF +_
+        "- Only type your answers on the lines that begin with 'Answer:'" + CRLF +_
+        "- Begin your answer after the '" + cTagSeperator + "' character" + CRLF + _
+        "Thank you for taking the time to respond."
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Load Question and Answer Lists
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub generate_survey(file_name As String, the_type As String, _
+                    the_objid As Long, question_set As String, the_action as String)
+  Dim t_ret    As New BulkRetrieve
+  Dim now_str  As String
+  Dim which    As String
+  Dim f_rel    As String
+  Dim t_list   As List
+  Dim t_list2  As List
+  Dim t_rec    As Record
+  Dim t_int    As Integer
+  Dim q_list   As New List
+  Dim t_set    As String
+  Dim t_int2   As Integer
+  Dim t_rec2   As Record
+  Dim t_list3  As List
+  Dim def_ans  As String
+  Dim ans(5)   As String
+  Dim num_ans  As Integer
+  Dim for_str  As String
+  Dim strQuestionIDs As String
+  Dim TheBody  As String
+  Dim ol As Object
+  Dim NewMail As Object
+  Dim NameSpace As Object
+  Dim default_answer_num as Integer
+  Dim default_answer_str as String
+
+
+                                        ' Fill the Global Data
+  FillGlobalData
+
+                                        ' Get current time
+                                        ' If they don't specify a question 
+                                        '  set, assume all sets
+  now_str = App.CurrentDate
+  If question_set = "" Then
+     question_set = "All"
+  End If
+                                        ' Set the table name for the survey
+                                        '  type object
+  Select Case the_type
+   Case "C"
+     which = "contact"
+   Case "S"
+     which = "site"
+   Case "B"
+     which = "bus_org"
+   Case "A"
+     which = "case"
+   Case "O"
+     which = "commit_log"
+   Case "I"
+     which = "interact"
+  End Select
+
+                                        ' Query for the base object (for 
+                                        '  header of questionnaire)
+                                        ' Query for the questions (for quests
+                                        '  that have no date range)
+                                        ' Query for the answers
+                                        ' Query for the config item
+                                        ' Get the data
+  f_rel = "surv_ans2" + which
+  t_ret.SimpleQuery 0, which
+  t_ret.AppendFilter 0, "objid", cbEqual, the_objid
+  t_ret.SimpleQuery 1, "surv_quest"
+  t_ret.AppendFilter 1, "active", cbEqual, 1
+  t_ret.AppendFilter 1, "end_time", cbLess, "1/1/1760"
+  If question_set <> "All" Then  
+     t_ret.AppendFilter 1, "question_set", cbEqual, question_set
+  End If
+  t_ret.TraverseFromParent 2, "surv_quest2surv_ans", 1
+  t_ret.TraverseFromParent 3, f_rel, 2
+  t_ret.AppendFilter 3, "objid", cbEqual, the_objid
+  t_ret.SimpleQuery 4, "config_itm"
+  t_ret.AppendFilter 4, "name", cbEqual, "SURVEY use defaults"
+  t_ret.RetrieveRecords
+
+                                        ' Get the base object
+                                        ' If not found, error and leave
+                                        ' Get the record and build the
+                                        '  header
+  Set t_list = t_ret.GetRecordList(0)
+  If t_list.Count = 0 Then
+     Debug.Print "Cannot find " + which + " with objid of: " + CStr(the_objid)
+     Exit Sub
+  End If
+  Set t_rec = t_list.ItemByIndex(0)
+  Select Case the_type
+   Case "C"
+     for_str = "contact: " + t_rec.GetField("first_name") + " " + _
+                             t_rec.GetField("last_name")
+   Case "S"
+     for_str = "site: " + t_rec.GetField("name") + "(" + _
+                          t_rec.GetField("site_id") + ")"
+   Case "B"
+     for_str = "business organization: " + t_rec.GetField("name")
+   Case "A"
+     for_str = "case: " + t_rec.GetField("id_number")
+  End Select
+                                       'Determine if we should print out 
+                                       'the default string or not
+  Set t_list = t_ret.GetRecordList(4)
+  If t_list.Count > 0 Then
+    Set t_rec = t_list.ItemByIndex(0)
+    gUseDefaults = t_rec.GetField("str_value")
+  Else
+    gUseDefaults = False
+  End If
+
+                                        ' Build up the question list, but
+                                        '  don't include "ask once" questions
+                                        '  that have been answered for this
+                                        '  person/site...
+  Set t_list = t_ret.GetRecordList(1)
+  For t_int = 0 To t_list.Count - 1
+    Set t_rec = t_list.ItemByIndex(t_int)
+    If t_rec.GetField("ask_once") = 1 Then
+       Set t_list2 = t_ret.GetRelatedRecordList(t_rec, "surv_quest2surv_ans")
+       For t_int2 = 0 To t_list2.Count - 1
+         Set t_rec2 = t_list2.ItemByIndex(t_int2)
+         Set t_list3 = t_ret.GetRelatedRecordList(t_rec2, f_rel)
+         If t_list3.Count > 0 Then Goto next_item
+       Next t_int2
+    End If
+    q_list.AppendItem t_rec
+next_item:
+  Next t_int
+
+                                        ' Query the survey questions for
+                                        '  active, question set, and date
+                                        '  range. Do same as above
+  t_ret.Clear
+  t_ret.SimpleQuery  0, "surv_quest"
+  t_ret.AppendFilter 0, "active", cbEqual, 1
+  t_ret.AppendFilter 0, "start_time", cbLess, now_str
+  t_ret.AppendFilter 0, "end_time", cbGreater, now_str
+  t_ret.AppendSort   0, "objid", cbAscending
+  If question_set <> "All" Then  
+     t_ret.AppendFilter 0, "question_set", cbEqual, question_set
+  End If
+  t_ret.TraverseFromParent 1, "surv_quest2surv_ans", 0
+  t_ret.RetrieveRecords
+
+                                        ' Get the data. Look at all questions
+                                        '  and build up the question list
+  Set t_list = t_ret.GetRecordList(0)
+  For t_int = 0 To t_list.Count - 1
+    Set t_rec = t_list.ItemByIndex(t_int)
+    If t_rec.GetField("ask_once") = 1 Then
+       Set t_list2 = t_ret.GetRelatedRecordList(t_rec, "surv_quest2surv_ans")
+       If t_list2.Count > 0 Then Goto next_item2
+    End If
+    q_list.AppendItem t_rec
+next_item2:
+  Next t_int
+
+                                        ' Build header of questionnaire
+  TheBody = cSurveyTitle + for_str + cSurveyTitle2 + CRLF
+  TheBody = TheBody +  cBlankLine + CRLF
+  TheBody = TheBody +  cSeperatorLine + CRLF
+  TheBody = TheBody +  gInstructions + CRLF
+  TheBody = TheBody +  cSeperatorLine + CRLF
+  TheBody = TheBody +  cBlankLine + CRLF
+
+
+                                        ' Iterate through the questions
+                                        ' Get the question
+                                        ' Add the objid to the string list of objids
+                                        ' Print the question and a blank line
+                                        ' If it's a text answer, print the 
+                                        '  answer blank. Go to next question
+                                        ' Else, set up data for mult choice
+
+  For t_int = 0 To q_list.Count - 1
+    Set t_rec = q_list.ItemByIndex(t_int)
+    If t_int = 0 Then
+      strQuestionIDs = CStr(t_rec.GetField("objid"))
+    Else
+      If t_int Mod 6 = 0 Then
+        strQuestionIDs = strQuestionIDs + cSeperator + CStr(t_rec.GetField("objid")) + CRLF
+      Else
+        strQuestionIDs = strQuestionIDs + cSeperator + CStr(t_rec.GetField("objid"))
+      End If
+    End If
+    TheBody = TheBody +  cQuestion + Space(1) + Trim$(CStr(t_int + 1)) + cTagSeperator + Space(1) + t_rec.GetField("question") + CRLF
+
+    Select Case t_rec.GetField("answer_type")
+      Case 0
+                                       'If we have a default text answer AND
+                                       'we're supposed to print the default string, 
+                                       'then print it
+       default_answer_str = t_rec.GetField("ans1")              
+       If Len(Trim(default_answer_str)) > 0 AND gUseDefaults Then
+         TheBody = TheBody +  cTab + cDefaultString + cTagSeperator + default_answer_str + CRLF
+       End If
+       TheBody = TheBody +  cTab + cAnswer + cTagSeperator + cTab + CRLF
+       Goto next_quest
+      Case Else
+       ans(1) = t_rec.GetField("ans1")
+       ans(2) = t_rec.GetField("ans2")
+       ans(3) = t_rec.GetField("ans3")
+       ans(4) = t_rec.GetField("ans4")
+       ans(5) = t_rec.GetField("ans5")
+     End Select
+
+                                        ' Print out the choices
+                                        ' Print out the answer blank
+    num_ans = t_rec.GetField("num_answers")
+    default_answer_num = t_rec.GetField("default_ans")
+    If default_answer_num = 1 AND gUseDefaults Then
+      TheBody = TheBody +  cTab + cChoices + cTagSeperator + cTab + ans(1) + Space(1) + "(" + cDefaultString + ")" + CRLF
+    Else
+      TheBody = TheBody +  cTab + cChoices + cTagSeperator + cTab + ans(1) + CRLF
+    End If
+
+    For t_int2 = 2 To num_ans
+      If default_answer_num = t_int2 AND gUseDefaults Then
+         TheBody = TheBody +  cTab + cTab + cTab + ans(t_int2) + Space(1) + "(" + cDefaultString + ")" + CRLF
+      Else
+         TheBody = TheBody +  cTab + cTab + cTab + ans(t_int2) + CRLF
+      End If
+    Next t_int2
+    TheBody = TheBody +  cTab + cAnswer + cTagSeperator + CRLF
+
+                                        ' Next question - put white space
+                                        ' Get next question
+
+next_quest:
+    TheBody = TheBody + CRLF + CRLF
+  Next t_int
+
+                                       ' Build the data section needed to 
+                                       ' parse replies
+  TheBody = TheBody + CRLF
+  TheBody = TheBody + cDoNotModifyLine + CRLF
+  TheBody = TheBody + cSeperatorLine + CRLF
+  TheBody = TheBody + cNumQuestions + cTagSeperator + CStr(q_list.Count)  + CRLF
+  TheBody = TheBody + cObjectType + cTagSeperator + which + CRLF
+  TheBody = TheBody + cObjectID + cTagSeperator + CStr(the_objid) + CRLF
+  TheBody = TheBody + cQuestionID + cTagSeperator + strQuestionIDs + CRLF
+  TheBody = TheBody + cSeperatorLine + CRLF
+  TheBody = TheBody + cBlankLine
+
+                                        ' If we're not building an email, 
+                                        '  open the file, but make sure it
+                                        '  opens OK.
+                                        ' Print out the actual message body 
+                                        ' Close file and exit
+  If ucase(the_action) <> "EMAIL" then
+    On Error Goto bad_file
+    Open file_name For Output As #1
+    On Error Goto 0
+    Print #1, TheBody
+    Close #1
+  Else
+                                       ' We're building an email
+                                       ' Currently, we only support Outlook
+                                       ' for sending email.
+                                       ' Make sure we log into outlook OK
+
+	  On Error Goto email_error
+    Set ol = CreateObject("Outlook.Application")
+    Set NameSpace = ol.GetNameSpace("MAPI")
+    NameSpace.Logon
+    Set NewMail = ol.CreateItem(cOutlookMailItem) 
+    NewMail.To = gContactEmail
+    NewMail.Subject = cSurveyTitle + for_str + cSurveyTitle2 
+    NewMail.Body = TheBody
+    NewMail.ReplyRecipients.Add cReplyToPerson
+    'NewMail.Display
+    NewMail.Send
+    NameSpace.Logoff                                 
+    On Error Goto 0
+	  Set ol = Nothing	
+	  Set NameSpace = Nothing	
+	  Set NewMail = Nothing	
+    End If
+    Exit Sub
+                                        ' If file cannot be opened. 
+                                        '  Print error and leave
+bad_file:
+  Debug.Print "Could not open file: " + file_name
+  Exit Sub
+email_error:
+  Debug.Print "Error Creating Outlook Object(s)"
+  Exit Sub
+End Sub
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Sample Survey Driver Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub survey_for_contact_from_case(case_objid As Long, the_action as String)
+  'The_action determines what we should do with the survey
+  'if the_action = "email", then we will email it to the customer
+  'else, we'll build a file
+
+  Dim file_name  As String
+  Dim cont_objid As Long
+  Dim t_ret      As New BulkRetrieve
+  Dim t_list     As List
+  Dim cont_rec   As Record
+
+  
+                                        ' Find the contact for the case that
+                                        '  was passed in
+  t_ret.SimpleQuery 0, "case"
+  t_ret.AppendFilter 0, "objid", cbEqual, case_objid
+  t_ret.TraverseFromParent 1, "case_reporter2contact", 0
+  t_ret.RetrieveRecords
+
+                                        ' Get the contact record and objid
+  Set t_list = t_ret.GetRecordList(1)
+  If t_list.Count = 0 Then
+     Debug.Print CRLF
+     Debug.Print "ERROR! Cannot find case with objid of: " + CStr(case_objid)
+     Debug.Print CRLF
+     Exit Sub
+  End If
+
+  Set cont_rec = t_list.ItemByIndex(0)
+  cont_objid = cont_rec.GetField("objid")
+  gContactEmail = Trim(cont_rec.GetField("e_mail"))
+
+  If Len(gContactEmail) = 0 AND (UCase(the_action) = "EMAIL")Then
+     Debug.Print CRLF
+     Debug.Print "ERROR! No email address found for contact: " + _
+                 cont_rec.getField("first_name") + Space$(1) + _
+                 cont_rec.getField("last_name") + Space$(1) + "@"+ _
+                 cont_rec.getField("phone")
+     Debug.Print CRLF
+     Exit Sub
+  End If
+
+                                        ' Build the output file name
+                                        ' Generate the survey
+  file_name = Trim$(CStr(cont_objid)) + ".sur"
+  generate_survey file_name, "C", cont_objid, "All", the_action
+End Sub
+
+
+
+

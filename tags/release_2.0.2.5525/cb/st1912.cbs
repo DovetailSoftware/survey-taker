@@ -1,0 +1,334 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+' Product        :  Form for Questions and Answers                            
+'
+' Name           :  1912
+'                                                                           
+' Description    :  Asks questions
+'
+'                   External Routines
+'
+'                     none
+'
+'                   Messages
+'
+'                     Inbound - cbFirstMessage + 1 - Display questions and
+'                                                    answers for one object
+'
+'                     Outbound - cbFirstMessage + 1 - Display question list
+'
+'                   CB Callback Routines
+'
+'                     1. Form_Load() - Called by CB when form loads
+'                     2. BTN_ANSWER_Click() - Answers a specific question
+'                     3. CLB_QUEST_Click() - A specific question was selected
+'                     4. DDL_SET_Click() - Change question set
+'                     5. Message() - Message Handler
+'
+'                   Internal Routines. These routines are utilities for use within
+'                   this module.
+'
+'                     1. load_lists(info As String) - Loads lists of values
+'
+' Author          : First Choice Software, Inc.
+'                   14412 Spicewood Springs Road
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'
+' Platforms       : This version supports Clarify 4.5 and later
+'
+' Updated: Sug 30, 2000 - added interactions and commitments
+' Copyright (C)  1997-2000 First Choice Software, Inc.
+' All Rights Reserved
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Functional Declarations
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Functional Declarations
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Dim sel_list1 As New List
+  Dim sel_list2 As New List
+
+                                        ' Do default action
+                                        ' Initialize question/answer lists
+  Me.DoDefault
+  sel_list1.ItemType = "Integer"
+  sel_list2.ItemType = "Integer"
+  Cobj_LOS_QUEST.Fill sel_list1
+  Cobj_LOS_ANS.Fill sel_list2
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Load Question Lists 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub load_lists(info As String)
+  Dim set_list As New List
+  Dim t_ret    As New BulkRetrieve
+  Dim t_list   As List
+  Dim t_list2  As List
+  Dim t_rec    As Record
+  Dim t_int    As Integer
+  Dim t_pos    As Integer
+  Dim q_list   As New List
+  Dim now_time As Date
+  Dim which    As String
+  Dim rel_name As String
+  Dim init_set As String
+  Dim t_str    As String
+  Dim the_year As Integer
+
+                                        ' Build up survey question set types
+  set_list.ItemType = "String"
+  set_list.AppendItem "All"
+  now_time = CDate(App.CurrentDate)
+
+                                        ' Get the relation name
+                                        ' Get the current set
+  which = Cobj_SITE_CONTACT.Contents
+  rel_name = which + "2surv_ans"
+
+                                        ' If no info string, this is a refresh. Only get the
+                                        '  question list
+  If info = "" Then 
+     init_set = Cobj_TXT_SET.Contents
+     Goto only_q_list
+  End If
+
+                                        ' Use "ALL" and anything else found
+  Cobj_CUR_SET.Fill "All"
+
+                                        ' Get the question set
+  t_ret.SimpleQuery 0, "hgbst_lst"
+  t_ret.AppendFilter 0, "title", cbEqual, "SURV_QUEST_TYPE"
+  t_ret.TraverseFromParent 1, "hgbst_lst2hgbst_show", 0
+  t_ret.TraverseFromParent 2, "hgbst_show2hgbst_elm", 1
+  t_ret.RetrieveRecords
+
+                                        ' Get and build the list of questions
+  Set t_list = t_ret.GetRecordList(2)
+  For t_int = 0 To t_list.Count - 1
+    Set t_rec = t_list.ItemByIndex(t_int)
+    set_list.AppendItem t_rec.GetField("title")
+  Next t_int
+  Cobj_LST_SET.Fill set_list
+  
+                                        ' If they specified a question set
+                                        '  Get the string, and set the 
+                                        '  dropdown list value to it.
+  If Len(info) > 10 Then
+     init_set = Right$(info, Len(info) - 10)
+     For t_int = 0 To set_list.Count - 1
+       t_str = set_list.ItemByIndex(t_int)
+       If UCase(t_str) = Ucase(init_set) Then
+          Cobj_TXT_SET.Fill init_set
+          Cobj_CUR_SET.Fill init_set
+          Exit For
+       End If
+     Next
+  End If
+
+only_q_list:
+  t_ret.Clear
+  t_ret.SimpleQuery 0, Cobj_SITE_CONTACT.Contents
+  t_ret.AppendFilter 0, "objid", cbEqual, Cobj_S_C_OBJID.Contents
+  t_ret.TraverseFromParent 1, rel_name, 0
+  t_ret.AppendSort 1, "date_answered", cbAscending
+  t_ret.TraverseFromParent 2, "surv_ans2surv_quest", 1
+  t_ret.AppendFilter 2, "active", cbEqual, 1
+  If init_set <> "All" Then  
+     t_ret.AppendFilter 2, "question_set", cbEqual, init_set
+  End If
+  t_ret.SimpleQuery 3, "surv_quest"
+  t_ret.AppendFilter 3, "active", cbEqual, 1
+  If init_set <> "All" Then  
+     t_ret.AppendFilter 3, "question_set", cbEqual, init_set
+  End If
+  t_ret.RetrieveRecords
+
+  
+                                        ' Get list of answers. Remove any not for the
+                                        '  current set. If "All", don't bother. Put in grid
+  Set t_list = t_ret.GetRecordList(1)
+  If init_set = "All" Then Goto fill_answers
+  For t_int = t_list.Count - 1 To 0 Step -1
+     Set t_rec = t_list.ItemByIndex(t_int)
+     Set t_list2 = t_ret.GetRelatedRecordList(t_rec, "surv_ans2surv_quest")
+     If t_list2.Count = 0 Then
+        t_list.RemoveByIndex t_int
+     End If
+  Next t_int
+fill_answers:
+  Cobj_LOR_ANS.Fill t_list
+
+                                        ' Build up list of questions  
+  q_list.ItemType = "Record"
+  
+                                        ' Get all questions (for this set)
+                                        ' We need to do this so that we can find any
+                                        '  questions that are active, but have not
+                                        '  been answered (not found above)
+                                        ' If already in the question list, don't add
+  Set t_list = t_ret.GetRecordList(3)
+  For t_int = 0 To t_list.Count - 1
+    Set t_rec = t_list.ItemByIndex(t_int)
+    If Left$(t_rec.GetField("end_time"), 1) = "?" Then Goto add_it
+
+    If CDate(t_rec.GetField("start_time")) >  now_time  Or _
+      now_time > CDate(t_rec.GetField("end_time")) Then GoTo next_one
+
+
+add_it:
+    q_list.AppendItem t_rec
+next_one:
+  Next t_int
+
+                                        ' Get list of questions for the answers
+                                        '  that are showing. If any are ask once,
+                                        '  remove them!!
+  Set t_list = t_ret.GetRecordList(2)
+  For t_int = 0 To t_list.Count - 1
+    Set t_rec = t_list.ItemByIndex(t_int)
+    If Left$(t_rec.GetField("end_time"), 1) = "?" Then Goto check_it
+    If Cdate(t_rec.GetField("start_time")) >  now_time  Or _
+      now_time > CDate(t_rec.GetField("end_time")) Then GoTo rem_it
+
+check_it:
+    If t_rec.GetField("ask_once") = 0 Then Goto next_one2
+rem_it:
+    t_pos = q_list.FindFirstIndex(t_rec.GetField("objid"), "objid")
+    If t_pos >= 0 Then q_list.RemoveByIndex t_pos
+next_one2:
+  Next t_int
+
+                                        ' Fill the question list
+  Cobj_LOR_QUEST.Fill q_list
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Done Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLOSE_Click()
+                                        ' If we're closing...
+                                        '  Front the question tab and send
+                                        '   a message to tell it to make the
+                                        '   radio buttons invis. - Due to MFC
+                                        '   bug that hangs the system on the
+                                        '   2nd post!!
+  TAB_D_1913.Value = True
+  Me.NotifyChild cbFirstMessage + 2, ""
+  Me.Close cbCloseChildren
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Message Handler     
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Message(ByVal num As Long, ByVal info As String)
+  Dim which    As String
+  Dim t_obj    As Long
+  Dim t_ret    As New BulkRetrieve
+  Dim t_list   As List
+  Dim t_rec    As Record
+  Dim t_str    As String
+  Dim t_int    As Integer
+  Dim ans_list As List
+  
+                                        ' Do default action
+                                        ' If message is:
+                                        '  1. cbCloseMessage - Close this form
+                                        '  2. cbFirstMessage + 1 - Initialize
+                                        '      for the case/contact...
+  Me.DoDefault
+  Select Case num
+   Case cbCloseMessage
+      Me.Close cbCloseChildren
+   Case cbFirstMessage + 3
+      t_ret.SimpleQuery 0, "surv_ans"
+      t_ret.AppendFilter 0, "objid", cbEqual, CLng(info)
+      t_ret.RetrieveRecords
+      Set t_list = t_ret.GetRecordList(0)
+      Set t_rec = t_list.ItemByIndex(0)
+      Set ans_list = Cobj_LOR_ANS.Contents
+      ans_list.AppendItem t_rec
+      Cobj_LOR_ANS.Fill ans_list    
+   Case cbFirstMessage + 2
+      load_lists ""
+   Case cbFirstMessage + 1
+'     If Now() >= CDate("1/1/98") Then
+'        App.MsgBox "The ending date on this trial version of Survey Taker has passed. " + _
+'         "For more information about this product, contact First Choice Software, Inc (sales@fchoice.com)."
+'        Me.Close cbCloseChildren
+'        Exit Sub
+'     End If
+
+                                        ' Figure out what the survey is for
+     which = UCase(Left$(info, 1))
+     t_obj = CLng(Mid$(info, 2, 9))
+     Cobj_S_C_OBJID.Fill t_obj
+     Select Case which
+      Case "S"
+       which = "site"
+      Case "C"
+       which = "contact"
+      Case "B"
+       which = "bus_org"
+      Case "A"
+       which = "case"
+      Case "I"
+       which = "interact"
+      Case "O"
+       which = "commit_log"              
+     End Select
+
+                                        ' Remember what it's for
+                                        ' Get data for the object so we
+                                        '  can display it (t_str)
+                                        ' Set it in a caption
+                                        ' Send a message to the quest tab
+     Cobj_SITE_CONTACT.Fill which
+     t_ret.SimpleQuery 0, which
+     t_ret.AppendFilter 0, "objid", cbEqual, t_obj
+     t_ret.RetrieveRecords
+     Set t_list = t_ret.GetRecordList(0)                      
+     Set t_rec = t_list.ItemByIndex(0)
+     Select Case which
+      Case "contact"
+       t_str = "contact: " + t_rec.GetField("first_name") + " " + _
+               t_rec.GetField("last_name")
+      Case "site"
+       t_str = "site: " + t_rec.GetField("name") + " (" + _
+               t_rec.GetField("site_id") + ")"
+      Case "bus_org"
+       t_str = "business organization: " + t_rec.GetField("name") + " (" + _
+               t_rec.GetField("org_id") + ")"
+      Case "case"
+       t_str = "case: " + t_rec.GetField("id_number")
+      Case "commitment"
+       t_str = "commit_log: " + t_rec.GetField("title")
+      Case "interact"
+       t_str = "interaction: " + t_rec.GetField("interact_id")       
+     End Select
+     t_str = "Survey Questions for " + t_str
+     LBL_HDR.Caption = t_str
+     Cobj_TXT_SET.Fill "All"
+     Cobj_CUR_SET.Fill "All"
+
+                                        ' Load the question lists
+     load_lists info
+
+     Me.NotifyByID 1913, cbFirstMessage + 1, ""
+  End Select
+End Sub
+
+
+
+ 

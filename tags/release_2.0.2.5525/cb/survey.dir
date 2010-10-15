@@ -1,0 +1,7 @@
+st1910.cbs F 1910 1.0 surv1.0
+st1911.cbs F 1911 1.0 surv1.0
+st1912.cbs F 1912 1.0 surv1.0
+st1913.cbs F 1913 1.0 surv1.0
+st1914.cbs F 1914 1.0 surv1.0
+survgl.cbs -G clarify -N survey
+

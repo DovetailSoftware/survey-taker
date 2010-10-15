@@ -1,0 +1,43 @@
+OPTION EXPLICIT
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Initialize application method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                                        ' NOTE: If you already have a global
+                                        '  module with an "initialize app"
+                                        '  method, fold this code into that
+                                        '  method - you can only have one!!
+Sub initialize_app() 
+  Dim pc_menu As New AppMenu            ' The Policies & Customers menu bar
+  
+                                        ' Set which menu we're using
+                                        ' Add the two new menu items
+                                        ' Show the menu
+  pc_menu.MenuBarID = 1001
+  pc_menu.AddItem "New", "Survey Question", "NewSurvQuest"   
+  pc_menu.AddItem "Select", "Survey Question", "SelSurvQuest"   
+  App.ShowDefaultMenu  
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Select Survey Question Menu Item Click Method             
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub SelSurvQuest_Click()
+  Dim sel_form As New Form              ' Form to display
+  
+                                        ' Show the select survey form
+  sel_form.Show 1910, 0
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   New Survey Question Menu Item Click Method             
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub NewSurvQuest_Click()
+  Dim new_form As New Form              ' Form to display
+  
+                                        ' Show the new survey question form
+  new_form.Show 1911, 0
+End Sub

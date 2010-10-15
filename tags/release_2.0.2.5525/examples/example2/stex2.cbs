@@ -1,0 +1,49 @@
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Product        :  Survey Taker(tm)
+'
+' Series         :  First Choice Productivity Series(tm)
+'
+' Name           :  Example 2 code - Close case form (340)
+'
+' Description    :  Illustrates how to display the Q&A form from a Form
+'                   Load method. Displays survey for the case.
+'
+' Author          : First Choice Software, Inc.
+'                   4412 Spicewood Springs Road
+'                   Suite 701
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'                   EMAIL: support@fchoice.com
+'                   www.fchoice.com
+'
+' Platforms       : This version supports Clarify 4.0 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Form Load Method
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Dim close_case_rec As Record          ' View record. Holds case info
+  Dim qa_form        As New Form        ' Q/A form
+                    
+
+                                        ' Do default action
+                                        ' Get case info view record
+                                        '  Show Q/A form
+                                        '  Send Q/A form a message. Tell it
+                                        '   to display a case survey, the 
+                                        '   case's objid, and that it should
+                                        '   display all survey questions (no
+                                        '   survey name specified).
+  Me.DoDefault
+  Set close_case_rec = Cobj_V_CLS_CASE.Contents
+  qa_form.Show 1912, cbFrontIfUp
+  qa_form.Notify cbFirstMessage + 1, "A" + _
+                     Trim$(Str$(close_case_rec.GetField("case_id")))                    
+End Sub

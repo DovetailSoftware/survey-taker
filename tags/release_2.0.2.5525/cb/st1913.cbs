@@ -1,0 +1,259 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+' Product        :  Question Tab for Question/Answer Form                            
+'
+' Name           :  1913
+'                                                                           
+' Description    :  Asks questions
+'
+'                   External Routines
+'
+'                     none
+'
+'                   Messages
+'
+'                     Inbound - cbFirstMessage + 1 - Load the data lists
+'
+'                   CB Callback Routines
+'
+'                     1. Form_Load() - Called by CB when form loads
+'                     2. BTN_ANSWER_Click() - Answers a specific question
+'                     3. CLB_QUEST_Click() - A specific question was selected
+'                     4. DDL_SET_Click() - Change question set
+'                     5. Message() - Message Handler
+'
+'                   Internal Routines. These routines are utilities for use within
+'                   this module.
+'
+'                     1. set_controls() - Set controls on form
+'
+' Author          : First Choice Software, Inc.
+'                   14412 Spicewood Springs Road
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'
+' Platforms       : This version supports Clarify 4.5 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Functional Declarations
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+Declare Sub set_controls()
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Form Load Method       
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Me.DoDefault
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Answer Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_ANSWER_Click()
+  Dim q_rec    As Record
+  Dim t_save   As New BulkSave
+  Dim ans_rec  As New Record
+  Dim t_ans    As String
+  Dim which    As String
+  Dim rel_name As String
+  Dim t_pos    As Integer
+  Dim t_list   As List
+  
+                                        ' Get the question
+                                        ' If it was a text question, set the
+                                        '  answer
+                                        ' Else, get the proper multiple 
+                                        '  choice answer
+  Set q_rec = CLB_QUEST.Selected
+  If TXT_ANS.Visible Then
+     t_ans = TXT_ANS.Text
+  Else
+     If OPT_1.Value Then t_ans = OPT_1.Caption
+     If OPT_2.Value Then t_ans = OPT_2.Caption
+     If OPT_3.Value Then t_ans = OPT_3.Caption
+     If OPT_4.Value Then t_ans = OPT_4.Caption
+     If OPT_5.Value Then t_ans = OPT_5.Caption
+  End If
+
+                                        ' Build up the answer record
+                                        ' Insert it into the database
+                                        ' Relate it to the question
+  ans_rec.RecordType = "surv_ans"
+  ans_rec.SetField "question", LBL_Q_DAT.Caption
+  ans_rec.SetField "answer", t_ans
+  ans_rec.SetField "date_answered", CStr(Now())
+  ans_rec.SetField "surv_taker", App.UserName
+  t_save.InsertRecord ans_rec
+  t_save.RelateRecords ans_rec, q_rec, "surv_ans2surv_quest"  
+
+                                        ' Get the person/site... that the
+                                        '  survey is for
+                                        ' Relate to that object
+                                        ' Save it in the DB
+  which = Cobj_SITE_CONTACT.Contents
+  rel_name = "surv_ans2" + which
+  t_save.RelateRecordsToID ans_rec, which, CLng(Cobj_S_C_OBJID.Contents), _
+                           rel_name
+  t_save.Save
+
+                                        ' Put the answer on the list of answers
+  Me.NotifyParent cbFirstMessage + 3, Trim$(Str$(ans_rec.GetField("objid")))
+  
+                                        ' Set controls to view as needed
+                                        ' If this was ask once...
+                                        '  Get the list of questions, find this one
+                                        '   and remove it. Put it back.
+  set_controls
+  If q_rec.GetField("ask_once") = 1 Then
+     Set t_list = Cobj_LOR_QUEST.Contents
+     t_pos = t_list.FindFirstIndex(q_rec.GetField("objid"), "objid")
+     t_list.RemoveByIndex t_pos
+     Cobj_LOR_QUEST.Fill t_list
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Question Custom List Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLB_QUEST_Click()
+  Dim q_rec       As Record
+  Dim ans_type    As Long
+  Dim num_answers As Long
+
+                                        ' Get the question
+                                        ' Set the question in the caption
+  Set q_rec = CLB_QUEST.Selected
+  LBL_Q_DAT.Caption = q_rec.GetField("question")
+  
+                                        ' Find out how many answers
+                                        '  and the type of the answer
+                                        ' Make the proper number of
+                                        '  controls visible based on the
+                                        '  answer type
+  BTN_ANSWER.Visible = True
+  num_answers = q_rec.GetField("num_answers")
+  ans_type = q_rec.GetField("answer_type")
+  If ans_type = 0 Then
+     TXT_ANS.Visible = True
+     TXT_ANS.Text = q_rec.GetField("ans1")
+     TXT_ANS.SetFocus
+  Else
+     TXT_ANS.Visible = False
+  End If
+  If ans_type = 0 Then
+     OPT_1.Visible = False
+     OPT_2.Visible = False
+     OPT_3.Visible = False
+     OPT_4.Visible = False
+     OPT_5.Visible = False
+     TXT_ANS.SetFocus
+  Else
+     OPT_1.Visible = True
+     OPT_2.Visible = True
+     OPT_3.Visible = (num_answers > 2)
+     OPT_4.Visible = (num_answers > 3)
+     OPT_5.Visible = (num_answers > 4)
+     Select Case ans_type
+       Case 1
+         OPT_1.Caption = "Yes"          
+         OPT_2.Caption = "No"
+       Case 2
+         OPT_1.Caption = "True"
+         OPT_2.Caption = "False"
+       Case 3
+         OPT_1.Caption = q_rec.GetField("ans1")
+         OPT_2.Caption = q_rec.GetField("ans2")
+         If num_answers > 2 Then OPT_3.Caption = q_rec.GetField("ans3")
+         If num_answers > 3 Then OPT_4.Caption = q_rec.GetField("ans4")
+         If num_answers > 4 Then OPT_5.Caption = q_rec.GetField("ans5")
+     End Select
+
+                                        ' Set the default if needed
+     Select Case q_rec.GetField("default_ans")
+      Case 1
+       OPT_1.Value = True
+      Case 2
+       OPT_2.Value = True
+      Case 3
+       OPT_3.Value = True
+      Case 4
+       OPT_4.Value = True
+      Case 5
+       OPT_5.Value = True
+     End Select
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Question Set Dropdown List Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub DDL_SET_Click()
+                                        ' If they didn't change the value
+                                        '  of the list, leave
+                                        ' Do default action
+                                        ' Remember changed value
+                                        ' Reload survey from new set
+  If DDL_SET.Selected = Cobj_CUR_SET.Contents Then Exit Sub
+  Me.DoDefault
+  Cobj_CUR_SET.Fill DDL_SET.Selected
+  set_controls
+  Me.NotifyParent cbFirstMessage + 2
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Load Question and Answer Lists
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub set_controls()
+                                        ' Unselect the question
+                                        ' Clear the question text
+                                        ' Make answers invisible
+  CLB_QUEST.UnSelect
+  LBL_Q_DAT.Caption = ""
+  TXT_ANS.Visible = False
+  OPT_1.Visible = False
+  OPT_2.Visible = False
+  OPT_3.Visible = False
+  OPT_4.Visible = False
+  OPT_5.Visible = False
+  BTN_ANSWER.Visible = False
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Message Handler            
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Message(ByVal num As Long, ByVal info As String)
+                                       ' Do default action
+                                        ' If message is:
+                                        '  1. cbCloseMessage - Close this form
+                                        '  2. cbFirstMessage + 1 - Load 
+                                        '      question list
+                                        '  3. cbFirstMessage + 2 - Parent is
+                                        '      closing down. MFC bug makes us
+                                        '      make radio buttons invisible!!
+  Me.DoDefault
+  Select Case num
+   Case cbCloseMessage
+     Me.Close
+   Case cbFirstMessage + 1
+     set_controls
+   Case cbFirstMessage + 2
+     OPT_1.Visible = False
+     OPT_2.Visible = False
+     OPT_3.Visible = False
+     OPT_4.Visible = False
+     OPT_5.Visible = False
+ End Select
+End Sub

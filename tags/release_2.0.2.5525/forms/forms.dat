@@ -1,0 +1,3996 @@
+OBJECT  TYPE="window_db", NAME="WINDOW_DB_1910_1.0_surv1.0"
+ UNIQUE_FIELD = id , ver_clarify, ver_customer
+  FIELDS
+   title ="Select Survey Question";
+   id=1910;
+   top_c=106;
+   bottom_c=385;
+   left_c=95;
+   right_c=728;
+   flags=0;
+   type=12;
+   form=1;
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   min_width=0;
+   min_height=0;
+   description ="";
+   dimmable=0;
+   dialog_name ="Select Surv Quest";
+   ver_clarify ="1.0";
+   ver_customer ="surv1.0";
+   base_flag ="";
+   preload ="";
+   dlg_time_stamp = DATE "08/10/97 22:32:05";
+   factor_top=0;
+   factor_bottom=0;
+   factor_left=0;
+   factor_right=0;
+   ver_cl_srce ="";
+  END_FIELDS
+  RELATIONS
+  END_RELATIONS
+END_OBJECT  NAME="WINDOW_DB_1910_1.0_surv1.0"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_1"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=1;
+   title ="~Done";
+   top_c=256;
+   bottom_c=274;
+   left_c=536;
+   right_c=616;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CLOSE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_1"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_2"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=13;
+   id=2;
+   title ="Field Array";
+   top_c=64;
+   bottom_c=247;
+   left_c=16;
+   right_c=616;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=536875008;
+   vlink_name ="LOS_QUEST";
+   vlink_fld=0;
+   vlink_dtype=518;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CLB_QUEST";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_2"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_3"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=3;
+   title ="~List";
+   top_c=34;
+   bottom_c=52;
+   left_c=536;
+   right_c=616;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_LIST";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_3"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_4"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=4;
+   title ="~Open";
+   top_c=256;
+   bottom_c=274;
+   left_c=120;
+   right_c=200;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_OPEN";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_4"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_5"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=5;
+   title ="~New";
+   top_c=256;
+   bottom_c=274;
+   left_c=16;
+   right_c=96;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_NEW";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_5"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_6"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=6;
+   title ="Select questions whose:";
+   top_c=8;
+   bottom_c=24;
+   left_c=16;
+   right_c=184;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_1";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_6"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_7"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=7;
+   id=7;
+   title ="Start Date";
+   top_c=32;
+   bottom_c=54;
+   left_c=16;
+   right_c=126;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_FIELD";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=0;
+   tlink_dtype=0;
+   name ="DDL_FIELD";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_7"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_8"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=7;
+   id=8;
+   title ="";
+   top_c=32;
+   bottom_c=54;
+   left_c=136;
+   right_c=246;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_OP";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="OP_LIST";
+   tlink_fld=0;
+   tlink_dtype=518;
+   name ="DDL_OP";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_8"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_9"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=9;
+   title ="";
+   top_c=32;
+   bottom_c=54;
+   left_c=256;
+   right_c=376;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_VAL";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_VAL";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_9"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_10"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=10;
+   title ="D/T";
+   top_c=34;
+   bottom_c=52;
+   left_c=384;
+   right_c=414;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_DT";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_10"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_11"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=7;
+   id=11;
+   title ="";
+   top_c=32;
+   bottom_c=54;
+   left_c=424;
+   right_c=524;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_ASC";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="LST_ASC";
+   tlink_fld=0;
+   tlink_dtype=518;
+   name ="DDL_ASC";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_11"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1910_1.0_surv1.0_12"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=6;
+   id=12;
+   title ="Include inactive questions";
+   top_c=8;
+   bottom_c=24;
+   left_c=256;
+   right_c=456;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=16;
+   vlink_name ="LNG_ACTIVE";
+   vlink_fld=0;
+   vlink_dtype=512;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CHK_ACTIVE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1910;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1910_1.0_surv1.0_12"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_2_0"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=0;
+   value1 ="LOR_QUEST";
+   value2 ="Set";
+   value3 ="question_set";
+   intval1=2;
+   intval2=516;
+   intval3=120;
+   intval4=8;
+   ctl_id=2;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_2" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_2_0"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_2_1"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=1;
+   value1 ="LOR_QUEST";
+   value2 ="Question";
+   value3 ="question";
+   intval1=1;
+   intval2=516;
+   intval3=240;
+   intval4=8;
+   ctl_id=2;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_2" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_2_1"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_2_2"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=2;
+   value1 ="LOR_QUEST";
+   value2 ="Start Date";
+   value3 ="start_time";
+   intval1=10;
+   intval2=609;
+   intval3=120;
+   intval4=8;
+   ctl_id=2;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_2" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_2_2"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_2_3"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=3;
+   value1 ="LOR_QUEST";
+   value2 ="End Date";
+   value3 ="end_time";
+   intval1=11;
+   intval2=609;
+   intval3=120;
+   intval4=8;
+   ctl_id=2;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_2" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_2_3"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_2_4"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=4;
+   value1 ="LOR_QUEST";
+   value2 ="Active";
+   value3 ="active";
+   intval1=12;
+   intval2=512;
+   intval3=60;
+   intval4=8;
+   ctl_id=2;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_2" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_2_4"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_7_0"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=0;
+   value1 ="Set";
+   value2 ="";
+   value3 ="";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   ctl_id=7;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_7" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_7_0"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_7_1"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=1;
+   value1 ="Question";
+   value2 ="";
+   value3 ="";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   ctl_id=7;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_7" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_7_1"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_7_2"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=2;
+   value1 ="Start Date";
+   value2 ="";
+   value3 ="";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   ctl_id=7;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_7" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_7_2"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1910_1.0_surv1.0_7_3"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=3;
+   value1 ="End Date";
+   value2 ="";
+   value3 ="";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   ctl_id=7;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1910_1.0_surv1.0_7" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1910_1.0_surv1.0_7_3"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LOR_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_QUEST";
+   type=3520;
+   idx=0;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LOR_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LOS_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_QUEST";
+   type=518;
+   idx=1;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LOS_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_FIELD"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_FIELD";
+   type=516;
+   idx=2;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_FIELD"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_OP"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_OP";
+   type=516;
+   idx=3;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_OP"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_VAL"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_VAL";
+   type=516;
+   idx=4;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_VAL"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_OP_LIST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="OP_LIST";
+   type=518;
+   idx=5;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_OP_LIST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_ASC"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_ASC";
+   type=516;
+   idx=6;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_TXT_ASC"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LST_ASC"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LST_ASC";
+   type=518;
+   idx=7;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LST_ASC"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LNG_ACTIVE"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LNG_ACTIVE";
+   type=512;
+   idx=8;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1910_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1910_1.0_surv1.0_LNG_ACTIVE"
+
+OBJECT  TYPE="window_db", NAME="WINDOW_DB_1911_1.0_surv1.0"
+ UNIQUE_FIELD = id , ver_clarify, ver_customer
+  FIELDS
+   title ="Survey Question";
+   id=1911;
+   top_c=240;
+   bottom_c=575;
+   left_c=217;
+   right_c=785;
+   flags=0;
+   type=12;
+   form=1;
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   min_width=0;
+   min_height=0;
+   description ="";
+   dimmable=0;
+   dialog_name ="Survey Question";
+   ver_clarify ="1.0";
+   ver_customer ="surv1.0";
+   base_flag ="";
+   preload ="";
+   dlg_time_stamp = DATE "11/04/97 10:27:51";
+   factor_top=0;
+   factor_bottom=0;
+   factor_left=0;
+   factor_right=0;
+   ver_cl_srce ="";
+  END_FIELDS
+  RELATIONS
+  END_RELATIONS
+END_OBJECT  NAME="WINDOW_DB_1911_1.0_surv1.0"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_1"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=1;
+   title ="Question:";
+   top_c=16;
+   bottom_c=38;
+   left_c=8;
+   right_c=78;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_QUEST";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_1"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_2"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=2;
+   title ="";
+   top_c=16;
+   bottom_c=38;
+   left_c=128;
+   right_c=424;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=1;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_QUEST";
+   intval1=0;
+   intval2=255;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="question";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_2"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_3"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=3;
+   title ="~Done";
+   top_c=312;
+   bottom_c=330;
+   left_c=480;
+   right_c=560;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CLOSE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_3"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_4"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=4;
+   title ="~Replace";
+   top_c=312;
+   bottom_c=330;
+   left_c=376;
+   right_c=456;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_REPLACE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_4"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_5"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=5;
+   title ="~Add";
+   top_c=312;
+   bottom_c=330;
+   left_c=272;
+   right_c=352;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_ADD";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_5"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_6"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=6;
+   title ="Question Set:";
+   top_c=48;
+   bottom_c=70;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_SET";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_6"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_7"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=7;
+   id=7;
+   title ="";
+   top_c=48;
+   bottom_c=70;
+   left_c=128;
+   right_c=258;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=2;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=0;
+   tlink_dtype=0;
+   name ="DDL_SET";
+   intval1=0;
+   intval2=1;
+   intval3=0;
+   intval4=-1;
+   value1 ="SURV_QUEST_TYPE";
+   value2 ="Level 1";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="question_set";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_7"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_8"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=8;
+   title ="Answer Type:";
+   top_c=16;
+   bottom_c=38;
+   left_c=440;
+   right_c=544;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_TYPE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_8"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_9"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=9;
+   title ="Text Answer";
+   top_c=48;
+   bottom_c=70;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=2;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_TEXT";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_9"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_10"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=10;
+   title ="2 Answers";
+   top_c=144;
+   bottom_c=166;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_2";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_10"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_11"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=11;
+   title ="3 Answers";
+   top_c=176;
+   bottom_c=198;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_3";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_11"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_12"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=12;
+   title ="4 Answers";
+   top_c=208;
+   bottom_c=230;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_4";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_12"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_13"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=13;
+   title ="5 Answers";
+   top_c=240;
+   bottom_c=262;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_5";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_13"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_14"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=14;
+   title ="Yes/No";
+   top_c=80;
+   bottom_c=102;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_YN";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_14"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_15"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=15;
+   title ="True/False";
+   top_c=112;
+   bottom_c=134;
+   left_c=440;
+   right_c=552;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_BUTTON";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_TF";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_15"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_16"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=16;
+   title ="Answer 1:";
+   top_c=152;
+   bottom_c=174;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS1";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_16"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_17"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=17;
+   title ="Answer 2:";
+   top_c=184;
+   bottom_c=206;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS2";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_17"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_18"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=18;
+   title ="Answer 3:";
+   top_c=216;
+   bottom_c=238;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS3";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_18"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_19"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=19;
+   title ="Answer 4:";
+   top_c=248;
+   bottom_c=270;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS4";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_19"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_20"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=20;
+   title ="Answer 5:";
+   top_c=280;
+   bottom_c=302;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS5";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_20"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_21"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=6;
+   id=21;
+   title ="Active?";
+   top_c=48;
+   bottom_c=70;
+   left_c=312;
+   right_c=412;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=16;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=13;
+   vlink_dtype=512;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CHK_ACTIVE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="active";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_21"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_22"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=22;
+   title ="";
+   top_c=152;
+   bottom_c=174;
+   left_c=128;
+   right_c=296;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=6;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_ANS1";
+   intval1=0;
+   intval2=80;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="ans1";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_22"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_23"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=23;
+   title ="";
+   top_c=184;
+   bottom_c=206;
+   left_c=128;
+   right_c=296;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=7;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_ANS2";
+   intval1=0;
+   intval2=80;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="ans2";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_23"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_24"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=24;
+   title ="";
+   top_c=216;
+   bottom_c=238;
+   left_c=128;
+   right_c=296;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=8;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_ANS3";
+   intval1=0;
+   intval2=80;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="ans3";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_24"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_25"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=25;
+   title ="";
+   top_c=248;
+   bottom_c=270;
+   left_c=128;
+   right_c=296;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=9;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_ANS4";
+   intval1=0;
+   intval2=80;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="ans4";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_25"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_26"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=26;
+   title ="";
+   top_c=280;
+   bottom_c=302;
+   left_c=128;
+   right_c=296;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=10;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_ANS5";
+   intval1=0;
+   intval2=80;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="ans5";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_26"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_27"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=27;
+   title ="Start Date";
+   top_c=88;
+   bottom_c=110;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_START_DT";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_27"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_28"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=28;
+   title ="End Date:";
+   top_c=120;
+   bottom_c=142;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_END_DT";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_28"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_29"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=29;
+   title ="";
+   top_c=88;
+   bottom_c=110;
+   left_c=128;
+   right_c=248;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=11;
+   vlink_dtype=609;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_START_DT";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="start_time";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_29"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_30"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=30;
+   title ="";
+   top_c=120;
+   bottom_c=142;
+   left_c=128;
+   right_c=248;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=12;
+   vlink_dtype=609;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_END_DT";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="end_time";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_30"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_31"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=31;
+   title ="D/T";
+   top_c=88;
+   bottom_c=106;
+   left_c=264;
+   right_c=294;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_DT1";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_31"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_32"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=32;
+   title ="D/T";
+   top_c=120;
+   bottom_c=138;
+   left_c=264;
+   right_c=294;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_DT2";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_32"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_33"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=6;
+   id=33;
+   title ="Ask Once?";
+   top_c=88;
+   bottom_c=106;
+   left_c=312;
+   right_c=412;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=16;
+   vlink_name ="SURV_QUEST";
+   vlink_fld=14;
+   vlink_dtype=512;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CHK_ONCE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="ask_once";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_33"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_34"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=34;
+   title ="Default";
+   top_c=154;
+   bottom_c=172;
+   left_c=312;
+   right_c=392;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_DEFAULT";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_DEF1";
+   intval1=0;
+   intval2=0;
+   intval3=2;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_34"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_35"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=35;
+   title ="Default";
+   top_c=186;
+   bottom_c=204;
+   left_c=312;
+   right_c=392;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_DEFAULT";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_DEF2";
+   intval1=0;
+   intval2=0;
+   intval3=2;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_35"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_36"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=36;
+   title ="Default";
+   top_c=218;
+   bottom_c=236;
+   left_c=312;
+   right_c=392;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_DEFAULT";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_DEF3";
+   intval1=0;
+   intval2=0;
+   intval3=2;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_36"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_37"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=37;
+   title ="Default";
+   top_c=250;
+   bottom_c=268;
+   left_c=312;
+   right_c=392;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_DEFAULT";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_DEF4";
+   intval1=0;
+   intval2=0;
+   intval3=2;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_37"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_38"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=38;
+   title ="Default";
+   top_c=282;
+   bottom_c=300;
+   left_c=312;
+   right_c=392;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_RAD_DEFAULT";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_DEF5";
+   intval1=0;
+   intval2=0;
+   intval3=2;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_38"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1911_1.0_surv1.0_39"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=39;
+   title ="Default Answer:";
+   top_c=152;
+   bottom_c=174;
+   left_c=8;
+   right_c=112;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_DEF_TXT_ANS";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1911;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1911_1.0_surv1.0_39"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1911_1.0_surv1.0_SURV_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="SURV_QUEST";
+   type=3520;
+   idx=0;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1911_1.0_surv1.0_SURV_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1911_1.0_surv1.0_TXT_RAD_BUTTON"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_RAD_BUTTON";
+   type=516;
+   idx=1;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1911_1.0_surv1.0_TXT_RAD_BUTTON"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1911_1.0_surv1.0_is_dirty"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="is_dirty";
+   type=512;
+   idx=2;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1911_1.0_surv1.0_is_dirty"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1911_1.0_surv1.0_TXT_RAD_DEFAULT"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_RAD_DEFAULT";
+   type=516;
+   idx=3;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1911_1.0_surv1.0_TXT_RAD_DEFAULT"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1911_1.0_surv1.0_LAST_RAD_BUTTON"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LAST_RAD_BUTTON";
+   type=512;
+   idx=4;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1911_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1911_1.0_surv1.0_LAST_RAD_BUTTON"
+
+OBJECT  TYPE="window_db", NAME="WINDOW_DB_1912_1.0_surv1.0"
+ UNIQUE_FIELD = id , ver_clarify, ver_customer
+  FIELDS
+   title ="Survey Questions";
+   id=1912;
+   top_c=159;
+   bottom_c=589;
+   left_c=183;
+   right_c=809;
+   flags=0;
+   type=12;
+   form=1;
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   min_width=0;
+   min_height=0;
+   description ="";
+   dimmable=0;
+   dialog_name ="Question Form";
+   ver_clarify ="1.0";
+   ver_customer ="surv1.0";
+   base_flag ="";
+   preload ="";
+   dlg_time_stamp = DATE "08/28/97 14:54:34";
+   factor_top=0;
+   factor_bottom=0;
+   factor_left=0;
+   factor_right=0;
+   ver_cl_srce ="";
+  END_FIELDS
+  RELATIONS
+  END_RELATIONS
+END_OBJECT  NAME="WINDOW_DB_1912_1.0_surv1.0"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1912_1.0_surv1.0_1"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=1;
+   title ="~Done";
+   top_c=400;
+   bottom_c=418;
+   left_c=536;
+   right_c=616;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CLOSE";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1912;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1912_1.0_surv1.0_1"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1912_1.0_surv1.0_2"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=2;
+   title ="";
+   top_c=8;
+   bottom_c=24;
+   left_c=8;
+   right_c=536;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_HDR";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1912;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1912_1.0_surv1.0_2"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1912_1.0_surv1.0_3"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=3;
+   title ="Questions";
+   top_c=40;
+   bottom_c=384;
+   left_c=8;
+   right_c=616;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=2;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TAB_D_1913";
+   intval1=402653184;
+   intval2=3;
+   intval3=1;
+   intval4=1913;
+   value1 ="TAB1";
+   value2 ="";
+   win_id=1912;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1912_1.0_surv1.0_3"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1912_1.0_surv1.0_4"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=4;
+   title ="Answers";
+   top_c=208;
+   bottom_c=226;
+   left_c=144;
+   right_c=274;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TAB_D_1914";
+   intval1=402653184;
+   intval2=4;
+   intval3=1;
+   intval4=1914;
+   value1 ="TAB1";
+   value2 ="";
+   win_id=1912;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1912_1.0_surv1.0_4"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOS_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_QUEST";
+   type=518;
+   idx=0;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOS_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOR_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_QUEST";
+   type=3520;
+   idx=1;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOR_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOS_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_ANS";
+   type=518;
+   idx=2;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOS_ANS"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOR_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_ANS";
+   type=3521;
+   idx=3;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LOR_ANS"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LST_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LST_SET";
+   type=518;
+   idx=4;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_LST_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_TXT_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_SET";
+   type=516;
+   idx=5;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_TXT_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_SITE_CONTACT"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="SITE_CONTACT";
+   type=516;
+   idx=6;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_SITE_CONTACT"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_S_C_OBJID"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="S_C_OBJID";
+   type=512;
+   idx=7;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_S_C_OBJID"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_CUR_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="CUR_SET";
+   type=516;
+   idx=8;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_CUR_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1912_1.0_surv1.0_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="ANS";
+   type=516;
+   idx=9;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1912_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1912_1.0_surv1.0_ANS"
+
+OBJECT  TYPE="window_db", NAME="WINDOW_DB_1913_1.0_surv1.0"
+ UNIQUE_FIELD = id , ver_clarify, ver_customer
+  FIELDS
+   title ="Survey questions";
+   id=1913;
+   top_c=216;
+   bottom_c=555;
+   left_c=288;
+   right_c=891;
+   flags=0;
+   type=12;
+   form=1;
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   min_width=0;
+   min_height=0;
+   description ="";
+   dimmable=0;
+   dialog_name ="Question Tab";
+   ver_clarify ="1.0";
+   ver_customer ="surv1.0";
+   base_flag ="";
+   preload ="";
+   dlg_time_stamp = DATE "08/11/97 22:18:10";
+   factor_top=0;
+   factor_bottom=0;
+   factor_left=0;
+   factor_right=0;
+   ver_cl_srce ="";
+  END_FIELDS
+  RELATIONS
+  END_RELATIONS
+END_OBJECT  NAME="WINDOW_DB_1913_1.0_surv1.0"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_1"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=13;
+   id=1;
+   title ="Field Array";
+   top_c=40;
+   bottom_c=200;
+   left_c=8;
+   right_c=568;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=4096;
+   vlink_name ="LOS_QUEST";
+   vlink_fld=0;
+   vlink_dtype=518;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CLB_QUEST";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_1"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_2"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=2;
+   title ="Question Set:";
+   top_c=8;
+   bottom_c=30;
+   left_c=8;
+   right_c=128;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_SET";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_2"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_3"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=7;
+   id=3;
+   title ="";
+   top_c=8;
+   bottom_c=30;
+   left_c=144;
+   right_c=274;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="TXT_SET";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="LST_SET";
+   tlink_fld=0;
+   tlink_dtype=518;
+   name ="DDL_SET";
+   intval1=0;
+   intval2=-1;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_3"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_4"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=4;
+   title ="Question:";
+   top_c=202;
+   bottom_c=224;
+   left_c=8;
+   right_c=88;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_QUEST";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_4"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_5"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=5;
+   title ="";
+   top_c=202;
+   bottom_c=224;
+   left_c=104;
+   right_c=568;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_Q_DAT";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_5"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_6"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=6;
+   title ="Answer:";
+   top_c=224;
+   bottom_c=246;
+   left_c=8;
+   right_c=88;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_6"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_7"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=3;
+   id=7;
+   title ="";
+   top_c=224;
+   bottom_c=246;
+   left_c=104;
+   right_c=568;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=8;
+   vlink_name ="ANS";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="TXT_ANS";
+   intval1=0;
+   intval2=255;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_7"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_8"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=8;
+   title ="";
+   top_c=224;
+   bottom_c=246;
+   left_c=104;
+   right_c=324;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="ANS";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_1";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_8"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_9"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=9;
+   title ="";
+   top_c=224;
+   bottom_c=246;
+   left_c=340;
+   right_c=560;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="ANS";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_2";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_9"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_10"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=10;
+   title ="";
+   top_c=248;
+   bottom_c=270;
+   left_c=104;
+   right_c=324;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="ANS";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_3";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_10"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_11"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=11;
+   title ="";
+   top_c=248;
+   bottom_c=270;
+   left_c=340;
+   right_c=560;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="ANS";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_4";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_11"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_12"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=5;
+   id=12;
+   title ="";
+   top_c=272;
+   bottom_c=294;
+   left_c=104;
+   right_c=324;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="ANS";
+   vlink_fld=0;
+   vlink_dtype=516;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="OPT_5";
+   intval1=0;
+   intval2=0;
+   intval3=1;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_12"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1913_1.0_surv1.0_13"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=4;
+   id=13;
+   title ="~Answer";
+   top_c=280;
+   bottom_c=298;
+   left_c=488;
+   right_c=568;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="BTN_ANSWER";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1913;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1913_1.0_surv1.0_13"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1913_1.0_surv1.0_1_0"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=0;
+   value1 ="LOR_QUEST";
+   value2 ="Set";
+   value3 ="question_set";
+   intval1=2;
+   intval2=516;
+   intval3=120;
+   intval4=8;
+   ctl_id=1;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1913_1.0_surv1.0_1" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1913_1.0_surv1.0_1_0"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1913_1.0_surv1.0_1_1"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=1;
+   value1 ="LOR_QUEST";
+   value2 ="Question";
+   value3 ="question";
+   intval1=1;
+   intval2=516;
+   intval3=420;
+   intval4=8;
+   ctl_id=1;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1913_1.0_surv1.0_1" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1913_1.0_surv1.0_1_1"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOS_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_QUEST";
+   type=518;
+   idx=0;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOS_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOR_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_QUEST";
+   type=3520;
+   idx=1;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOR_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOS_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_ANS";
+   type=518;
+   idx=2;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOS_ANS"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOR_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_ANS";
+   type=3521;
+   idx=3;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LOR_ANS"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LST_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LST_SET";
+   type=518;
+   idx=4;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_LST_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_TXT_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_SET";
+   type=516;
+   idx=5;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_TXT_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_SITE_CONTACT"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="SITE_CONTACT";
+   type=516;
+   idx=6;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_SITE_CONTACT"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_S_C_OBJID"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="S_C_OBJID";
+   type=512;
+   idx=7;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_S_C_OBJID"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_CUR_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="CUR_SET";
+   type=516;
+   idx=8;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_CUR_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1913_1.0_surv1.0_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="ANS";
+   type=516;
+   idx=9;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1913_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1913_1.0_surv1.0_ANS"
+
+OBJECT  TYPE="window_db", NAME="WINDOW_DB_1914_1.0_surv1.0"
+ UNIQUE_FIELD = id , ver_clarify, ver_customer
+  FIELDS
+   title ="Survey Answers";
+   id=1914;
+   top_c=216;
+   bottom_c=555;
+   left_c=288;
+   right_c=891;
+   flags=0;
+   type=12;
+   form=1;
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   min_width=0;
+   min_height=0;
+   description ="";
+   dimmable=0;
+   dialog_name ="Answer Tab";
+   ver_clarify ="1.0";
+   ver_customer ="surv1.0";
+   base_flag ="";
+   preload ="";
+   dlg_time_stamp = DATE "08/11/97 22:19:08";
+   factor_top=0;
+   factor_bottom=0;
+   factor_left=0;
+   factor_right=0;
+   ver_cl_srce ="";
+  END_FIELDS
+  RELATIONS
+  END_RELATIONS
+END_OBJECT  NAME="WINDOW_DB_1914_1.0_surv1.0"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1914_1.0_surv1.0_1"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=13;
+   id=1;
+   title ="Field Array";
+   top_c=8;
+   bottom_c=251;
+   left_c=8;
+   right_c=571;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=536875008;
+   vlink_name ="LOS_ANS";
+   vlink_fld=0;
+   vlink_dtype=518;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="CLB_ANS";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1914;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1914_1.0_surv1.0_1"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1914_1.0_surv1.0_2"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=2;
+   title ="Question:";
+   top_c=254;
+   bottom_c=276;
+   left_c=8;
+   right_c=80;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_QUEST";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1914;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1914_1.0_surv1.0_2"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1914_1.0_surv1.0_3"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=3;
+   title ="Answer:";
+   top_c=286;
+   bottom_c=308;
+   left_c=8;
+   right_c=80;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_ANS";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1914;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1914_1.0_surv1.0_3"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1914_1.0_surv1.0_4"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=4;
+   title ="";
+   top_c=254;
+   bottom_c=276;
+   left_c=104;
+   right_c=568;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_Q_DAT";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1914;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1914_1.0_surv1.0_4"
+
+OBJECT  TYPE="control_db", NAME="CONTROL_DB_1914_1.0_surv1.0_5"
+ UNIQUE_FIELD=id,name UNIQUE_RELATION=control2window_db
+  FIELDS
+   type=0;
+   id=5;
+   title ="";
+   top_c=286;
+   bottom_c=308;
+   left_c=104;
+   right_c=568;
+   from_side=0;
+   to_ctrl_id=0;
+   same_side=0;
+   justification=0;
+   flags=0;
+   vlink_name ="";
+   vlink_fld=-1;
+   vlink_dtype=-1;
+   tlink_name ="";
+   tlink_fld=-1;
+   tlink_dtype=-1;
+   name ="LBL_A_DAT";
+   intval1=0;
+   intval2=0;
+   intval3=0;
+   intval4=0;
+   value1 ="";
+   value2 ="";
+   win_id=1914;
+   function_id=0;
+   description ="";
+   dimmable=0;
+   vlink_fld_name ="";
+   tlink_fld_name ="";
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=control2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CONTROL_DB_1914_1.0_surv1.0_5"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1914_1.0_surv1.0_1_0"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=0;
+   value1 ="LOR_ANS";
+   value2 ="Date Answered";
+   value3 ="date_answered";
+   intval1=3;
+   intval2=609;
+   intval3=108;
+   intval4=8;
+   ctl_id=1;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1914_1.0_surv1.0_1" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1914_1.0_surv1.0_1_0"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1914_1.0_surv1.0_1_1"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=1;
+   value1 ="LOR_ANS";
+   value2 ="Question";
+   value3 ="question";
+   intval1=1;
+   intval2=516;
+   intval3=240;
+   intval4=8;
+   ctl_id=1;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1914_1.0_surv1.0_1" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1914_1.0_surv1.0_1_1"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1914_1.0_surv1.0_1_2"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=2;
+   value1 ="LOR_ANS";
+   value2 ="Answer";
+   value3 ="answer";
+   intval1=2;
+   intval2=516;
+   intval3=120;
+   intval4=8;
+   ctl_id=1;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1914_1.0_surv1.0_1" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1914_1.0_surv1.0_1_2"
+
+OBJECT  TYPE="value_item", NAME="VALUE_ITEM_1914_1.0_surv1.0_1_3"
+ UNIQUE_FIELD = id , ctl_id UNIQUE_RELATION = item2window_db 
+  FIELDS
+   id=3;
+   value1 ="LOR_ANS";
+   value2 ="Survey Taker";
+   value3 ="surv_taker";
+   intval1=4;
+   intval2=516;
+   intval3=60;
+   intval4=8;
+   ctl_id=1;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=item2window_db;
+   TO_NAME="CONTROL_DB_1914_1.0_surv1.0_1" REL=value2control_db;
+  END_RELATIONS
+END_OBJECT  NAME="VALUE_ITEM_1914_1.0_surv1.0_1_3"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOS_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_QUEST";
+   type=518;
+   idx=0;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOS_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOR_QUEST"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_QUEST";
+   type=3520;
+   idx=1;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOR_QUEST"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOS_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOS_ANS";
+   type=518;
+   idx=2;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOS_ANS"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOR_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LOR_ANS";
+   type=3521;
+   idx=3;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LOR_ANS"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LST_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="LST_SET";
+   type=518;
+   idx=4;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_LST_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_TXT_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="TXT_SET";
+   type=516;
+   idx=5;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_TXT_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_SITE_CONTACT"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="SITE_CONTACT";
+   type=516;
+   idx=6;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_SITE_CONTACT"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_S_C_OBJID"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="S_C_OBJID";
+   type=512;
+   idx=7;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_S_C_OBJID"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_CUR_SET"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="CUR_SET";
+   type=516;
+   idx=8;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_CUR_SET"
+
+OBJECT  TYPE="ctx_obj_db", NAME="CTX_OBJ_DB_1914_1.0_surv1.0_ANS"
+ UNIQUE_FIELD = title  UNIQUE_RELATION = ctx_obj2window_db 
+  FIELDS
+   title ="ANS";
+   type=516;
+   idx=9;
+   behavior=16;
+   str_size=0;
+  END_FIELDS
+  RELATIONS
+   TO_NAME="WINDOW_DB_1914_1.0_surv1.0" REL=ctx_obj2window_db;
+  END_RELATIONS
+END_OBJECT  NAME="CTX_OBJ_DB_1914_1.0_surv1.0_ANS"
+

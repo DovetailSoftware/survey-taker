@@ -1,0 +1,374 @@
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'
+' Product        :  Select Survey Question Form                            
+'
+' Name           :  1910
+'                                                                           
+' Description    :  Allows a user to list, open, and create survey questions.
+'
+'                   External Routines
+'
+'                     none
+'
+'                   Messages
+'
+'                     Outbound: cbFirstMessage + 1 - Edit a survey question
+'
+'                     Inbound:  cbFirstMessage + 2 - Push the list button
+'
+'                   CB Callback Routines
+'
+'                     1. Form_Load() - Called by CB when form loads
+'                     2. BTN_DT_Click() - Pop the date/time dialog
+'                     3. BTN_NEW_Click() - Create a new survey question
+'                     4. BTN_LIST_Click() - List the survey questions      
+'                     5. BTN_OPEN_Click() - Open (edit) a survey question
+'                     6. DDL_FIELD_Click() - Change the list field
+'                     7. BTN_OPEN_Click() - Open (edit) a survey question
+'                     8. CLB_QUEST_Click() - Highlights a row in the custom list
+'                     9. CLB_QUEST_DblClick() - Selects a row in the custom list
+'                    10. CLOSE_Click() - Done button
+'                    11. Message() - Message handler
+'
+'                   Internal Routines. These routines are utilities for use within
+'                   this module.
+'
+'                     1. set_op - Set the operation in the dropdown list based on field
+'
+' Author          : First Choice Software, Inc.
+'                   14412 Spicewood Springs Road
+'                   Austin, TX  78759
+'                   (512) 418-2905
+'
+' Platforms       : This version supports Clarify 4.5 and later
+'
+' Copyright (C)  1997 First Choice Software, Inc.
+' All Rights Reserved
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Functional Declarations
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+OPTION EXPLICIT
+
+Declare Sub set_op(is_date As Boolean)  
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Form Load Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Form_Load()
+  Dim new_list  As New List
+  Dim new_list2 As New List
+
+                                        ' Do default action
+                                        ' Set initial button enabled state
+  Me.DoDefault
+  BTN_OPEN.Enabled = False
+  BTN_DT.Enabled = False
+
+                                        ' Initialize lists with proper types
+  new_list.ItemType = "String"
+  Cobj_OP_LIST.Fill new_list
+  new_list2.ItemType = "String"
+  new_list2.AppendItem "Ascending"
+  new_list2.AppendItem "Descending"
+  Cobj_LST_ASC.Fill new_list2
+
+                                        ' Set the filtering for initial fields
+  set_op False
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Set the Operation Dropdown List
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub set_op(is_date As Boolean)  
+
+                                        ' Clear the dropdown list
+                                        ' Set the fields based on it being
+                                        '  a date field, or not
+  DDL_OP.Clear
+  BTN_DT.Enabled = is_date
+  If is_date Then
+     DDL_OP.AppendItem "greater than"
+     DDL_OP.AppendItem "less than"
+     DDL_OP.AppendItem "today"
+     DDL_OP.AppendItem "yesterday"
+     DDL_OP.AppendItem "within last (days)"
+     DDL_OP.AppendItem "within last (hours)"
+     DDL_OP.AppendItem "before (days)"
+     DDL_OP.AppendItem "before (hours)"
+  Else
+     DDL_OP.AppendItem "starts with"
+     DDL_OP.AppendItem "ends with"
+     DDL_OP.AppendItem "contains"
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Set the Operation Dropdown List
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_DT_Click()
+  Dim t_comm As New CommonDialog
+
+                                        ' Set the dialog date/time from the 
+                                        '  text box
+                                        ' Post the D/T dialog
+                                        ' If any return date, put in text box
+  t_comm.DateTime = CStr(TXT_VAL.Text)
+  t_comm.Action = cbCDDateTime
+  If Instr(t_comm.DateTime, "?") = 0 Then
+     TXT_VAL.Text = CDate(t_comm.DateTime)
+  End If
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Create a New Question            
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_NEW_Click()
+  Dim new_form As New Form
+
+                                        ' Display the new question form
+  new_form.Show 1911, cbFrontIfUp
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   List Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_LIST_Click()
+  Dim t_ret   As New BulkRetrieve
+  Dim t_list  As List
+  Dim t_fld   As String
+  Dim t_op    As String
+  Dim t_val   As String
+  Dim is_date As Boolean
+  Dim t_date  As Date
+  Dim t_date2 As Date
+  Dim t_str   As String
+  Dim t_str2  As String
+
+                                        ' Assume is a date field, and get
+                                        '  the data value
+                                        ' Get the filtering field and if it's
+                                        '  a date field
+  is_date = True
+  t_val = TXT_VAL.Text
+  Select Case DDL_FIELD.Selected
+   Case "Set"
+    t_fld = "question_set"
+    is_date = False
+   Case "Question"
+    t_fld = "question"
+    is_date = False
+   Case "Start Date"
+    t_fld = "start_time"
+   Case "End Date"
+    t_fld = "end_time"
+  End Select
+
+                                        ' Set up the filtering
+  Select Case DDL_OP.Selected
+   Case "starts with"
+    t_val = t_val + "%"
+   Case "ends with"
+    t_val = "%" + t_val
+   Case "contains"
+    t_val = "%" + t_val + "%"
+  End Select
+
+                                        ' Clear the custom list
+                                        ' Look for previous questions
+                                        ' Filter based on operation
+  CLB_QUEST.Clear
+  t_ret.SimpleQuery 0, "surv_quest"
+  If is_date Then
+     Select Case DDL_OP.Selected
+      Case "greater than"
+        t_ret.AppendFilter 0, t_fld, cbGreater, t_val
+      Case "less than"
+        t_ret.AppendFilter 0, t_fld, cbLess, t_val
+      Case "today"
+        t_date = Now()
+        t_date2 = DateAdd("d", 1, t_date)
+        t_str = Trim$(Str$(month(t_date))) + "/" + Trim$(Str$(day(t_date))) + _ 
+                "/" + Trim$(Str$(year(t_date))) + " 0:0:0"
+        t_str2 = Trim$(Str$(month(t_date2))) + "/" + Trim$(Str$(day(t_date2))) + _ 
+                "/" + Trim$(Str$(year(t_date2))) + " 0:0:0"
+        t_ret.AppendFilter 0, t_fld, cbGreater, t_str
+        t_ret.AppendFilter 0, t_fld, cbLess, t_str2
+      Case "yesterday"
+        t_date = DateAdd("d", -1, Now())
+        t_date2 = DateAdd("d", 1, t_date)
+        t_str = Trim$(Str$(month(t_date))) + "/" + Trim$(Str$(day(t_date))) + _ 
+                "/" + Trim$(Str$(year(t_date))) + " 0:0:0"
+        t_str2 = Trim$(Str$(month(t_date2))) + "/" + Trim$(Str$(day(t_date2))) + _ 
+                "/" + Trim$(Str$(year(t_date2))) + " 0:0:0"
+        t_ret.AppendFilter 0, t_fld, cbGreater, t_str
+        t_ret.AppendFilter 0, t_fld, cbLess, t_str2
+      Case "within last (days)"
+        If Not IsNumeric(t_val) Then
+           App.MsgBox "Please enter a number"
+           TXT_VAL.SetFocus
+           Exit Sub
+        End If
+        t_date2 = Now()
+        t_date = DateAdd("d", -1 * CInt(t_val), t_date2)
+        t_str = Trim$(Str$(month(t_date))) + "/" + Trim$(Str$(day(t_date))) + _ 
+                "/" + Trim$(Str$(year(t_date))) + " 0:0:0"
+        t_ret.AppendFilter 0, t_fld, cbGreater, t_str
+        t_ret.AppendFilter 0, t_fld, cbLess, CStr(t_date2)
+      Case "within last (hours)"
+        If Not IsNumeric(t_val) Then
+           App.MsgBox "Please enter a number"
+           TXT_VAL.SetFocus
+           Exit Sub
+        End If
+        t_date2 = Now()
+        t_date = DateAdd("h", -1 * CInt(t_val), t_date2)
+        t_str = Trim$(Str$(month(t_date))) + "/" + Trim$(Str$(day(t_date))) + _ 
+                "/" + Trim$(Str$(year(t_date))) + " " + Trim$(Str$(hour(t_date))) + _
+                ":" + Trim$(Str$(minute(t_date))) + ":" + Trim$(Str$(second(t_date)))
+        t_str2 = Trim$(Str$(month(t_date2))) + "/" + Trim$(Str$(day(t_date2))) + _ 
+                "/" + Trim$(Str$(year(t_date2))) + " " + Trim$(Str$(hour(t_date2))) + _
+                ":" + Trim$(Str$(minute(t_date2))) + ":" + Trim$(Str$(second(t_date2)))
+        t_ret.AppendFilter 0, t_fld, cbGreater, t_str
+        t_ret.AppendFilter 0, t_fld, cbLess, t_str2
+      Case "before (days)"
+        If Not IsNumeric(t_val) Then
+           App.MsgBox "Please enter a number"
+           TXT_VAL.SetFocus
+           Exit Sub
+        End If
+        t_date2 = Now()
+        t_date = DateAdd("d", -1 * CInt(t_val), t_date2)
+        t_str = Trim$(Str$(month(t_date))) + "/" + Trim$(Str$(day(t_date))) + _ 
+                "/" + Trim$(Str$(year(t_date))) + " 0:0:0"
+        t_ret.AppendFilter 0, t_fld, cbLess, t_str
+      Case "before (hours)"
+        If Not IsNumeric(t_val) Then
+           App.MsgBox "Please enter a number"
+           TXT_VAL.SetFocus
+           Exit Sub
+        End If
+        t_date2 = Now()
+        t_date = DateAdd("h", -1 * CInt(t_val), t_date2)
+        t_str = Trim$(Str$(month(t_date))) + "/" + Trim$(Str$(day(t_date))) + _ 
+                "/" + Trim$(Str$(year(t_date))) + " 0:0:0"
+        t_ret.AppendFilter 0, t_fld, cbLess, t_str
+     End Select
+  Else
+     t_ret.AppendFilter 0, t_fld, cbLike, t_val
+  End If
+
+                                        ' Add filtering for active questions
+                                        ' Add sorting
+                                        ' Do the query
+                                        ' Display the list
+                                        ' No row selected - turn off "Open" btn
+  If CHK_ACTIVE.Value = False Then
+     t_ret.AppendFilter 0, "active", cbEqual, 1
+  End If
+  If DDL_ASC.Selected = "Ascending" Then
+     t_ret.AppendSort 0, t_fld, cbAscending
+  Else
+     t_ret.AppendSort 0, t_fld, cbDescending
+  End If
+  t_ret.RetrieveRecords
+  Set t_list = t_ret.GetRecordList(0)
+  Cobj_LOR_QUEST.Fill t_list
+  BTN_OPEN.Enabled = False
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Open Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub BTN_OPEN_Click()
+  Dim q_rec    As Record
+  Dim new_form As New Form
+
+                                        ' Get the selected record
+                                        ' Open the question form
+                                        ' Tell the form which question to
+                                        '  display
+  Set q_rec = CLB_QUEST.Selected
+  new_form.Show 1911, 0
+  new_form.Notify cbFirstMessage + 1, Str$(q_rec.GetField("objid")) 
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Field Filter Dropdown List Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub DDL_FIELD_Click()
+  Dim was_date As Boolean
+  Dim is_date  As Boolean
+
+                                        ' Do default action
+                                        ' See if last field was a date field
+  Me.DoDefault
+  was_date = BTN_DT.Enabled
+
+                                        ' Find out if new field is a date
+  is_date = False
+  Select Case DDL_FIELD.Selected
+   Case "Start Date"
+    is_date = True
+   Case "End Date"
+    is_date = True
+  End Select
+
+                                        ' Set fields if values are different
+  If is_date = was_date Then Exit Sub
+  set_op is_date
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Custom List Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLB_QUEST_Click()
+                                        ' Row highlighted, turn on "Open"
+  Me.DoDefault
+  BTN_OPEN.Enabled = True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Custom List Double Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLB_QUEST_DblClick()
+                                        ' Push the "Open" button
+  Me.DoDefault
+  BTN_OPEN.Value = True
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Done Button Click Method
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub CLOSE_Click()
+  Me.Close
+End Sub
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'   Message Handler                  
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Sub Message(ByVal num As Long, ByVal info As String)
+                                        ' If message is:
+                                        '  1. cbCloseMessage - Close this form
+                                        '  2. cbFirstMessage + 2 - Press List 
+  Me.DoDefault
+  Select Case num
+   Case cbCloseMessage
+     Me.Close
+   Case cbFirstMessage + 2
+     BTN_List.Value = True
+  End Select
+End Sub
